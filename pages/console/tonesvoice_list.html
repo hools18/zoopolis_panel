@@ -1,0 +1,108 @@
+<template>
+    <div class="page page-pd page-console graybg">
+        <div class="page-content">
+			<div class="graybg">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-25"></div>
+						<div class="col-100 small-100 medium-100 large-100 xlarge-75">
+							<div class="biggesthead">Tones voice list</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="whitebg">
+				<div class="container">
+					<div class="row">
+						<div class="col-50">
+							<div id="tonesvoiceList">
+								<div class="userforms">
+									<div class="flexzone" style="align-items: center; margin-top: 0; padding-top: 0;">
+										<div>
+											<div class="name">Universal search</div>
+										</div>
+										<div class="parms">
+											<input class="input search" type="text" placeholder="Enter name"/>
+										</div>
+									</div>
+								</div>
+								<ul class="list"></ul>
+								<ul class="pagination"></ul>
+							</div>
+
+				
+						</div>
+						<div class="col-25">
+						</div>
+						<div class="col-25">						
+							<div class="rightnav">
+								<div>
+									<a href="/console" class="col button button-fill">Back to Console</a>
+								</div>
+								<div>
+									<a href="#" class="col button button-fill color-gray" @click=${addTonesvoice}>Add tones vois</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+        </div>
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	var profile = {};
+	let industry = [];
+	let listTmp = {
+		valueNames: ['id', 'name'],
+		page: 50,
+		pagination: true,
+		item: '<a href="#" class="item-link item-content"><div class="item-inner"><div class="item-title-row"><div class="item-title name"></div></div></div></a>'
+	};
+	function addTonesvoice(){
+		$store.dispatch('addTonesvoice', {});
+	}
+	
+	$on("pageInit", function (e, page) {
+		app.preloader.hide();
+		app.request.postJSON(apiServer+'user/profile').then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					$store.dispatch('msgalert', {err: res.data.error});
+					//app.views.main.router.navigate('/login');
+					window.location.href = baseUrl+'login';
+				} else {
+					profile = res.data;
+					if(profile.level != 9){
+						window.location.href = baseUrl;
+					}
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+		
+		app.request.postJSON(apiServer+'console/tonesvoice/list').then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.err});
+				} else {
+					data = res.data;
+					//$update();
+					var tonesvoiceList = new List('tonesvoiceList', listTmp, data);
+
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	});
+    return $render;
+}
+</script>

@@ -1,0 +1,46 @@
+<template>
+    <div class="page page-pd page-profile">
+		<div class="navbar">
+			<div class="navbar-bg"></div>
+			<div class="navbar-inner sliding">
+				<div class="wrap">
+					<div class="title">Выйти из аккаунта</div>
+				</div>
+			</div>
+		</div>
+        <div class="page-content">
+			<div class="container">
+			</div>
+        </div>
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	$on("pageInit", function (e, page) {
+		app.preloader.show();
+		app.request.postJSON(apiServer+'user/logout').then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.error});
+					app.views.main.router.navigate('/user/login');
+				} else {
+					app.request.setup({
+						headers: {
+							'Authorization': false
+						}
+					});
+					$update();
+					app.preloader.hide();
+					window.location.href = baseUrl;
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+		//app.views.main.router.navigate('/admin/editpost/'+res.data+'/');
+	});
+    return $render;
+}
+</script>

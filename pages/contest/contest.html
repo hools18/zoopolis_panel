@@ -1,0 +1,120 @@
+<template>
+    <div class="page page-pd page-profile">
+        <div class="page-content">
+
+
+			<section id="about-2" class="about-section">
+				<div class="bg-inner bg-lightgrey inner-page-hero division">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-66 xsmall-66 small-66 medium-66 large-66 xlarge-66">
+								<div class="about-2-title">
+									<h2 class="h2-xl">${contest.name}</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<div class="container contest">
+				<div class="row">
+					<div class="col-65">
+						<div class="card contestDesc">
+							<div class="contestDesc" innerHTML=${contest.desc}></div>
+						</div>
+							
+						<div class="contestGallery">
+							<div class="row">
+							${contest.gallery.map((item, index) => $h`
+								<div class="col-20">
+									<a class="showGal" href="images/gallery/1600/${item}" @click=${showGallery} data-gallery="${index}">
+										<img class="noclick" src="images/gallery/200/${item}" style="width: 100%;"/>
+									</a>
+								</div>
+							`)}
+							</div>
+						
+						</div>
+					</div>
+					<div class="col-35">
+						<!-- Зафиксировать при скроллинге -->
+						<div class="card nopad contestInfo">
+							<img src="images/logos/500/${contest.logo}" style="width: 100%;" />
+							
+							<div class="fr">
+								<div class="row">
+									<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100 pd45">
+										<a href="#" class="button btn btn-md btn-skyblue tra-black-hover">Принять участие</a>
+									</div>
+									<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+										<div class="label">Сроки проведения</div>
+										<div class="data"><div>${contest.dayContestStartText}</div><div>${contest.dayContestStopText}</div></div>
+									</div>
+									<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+										<div class="label">Сроки подачи заявок</div>
+										<div class="data"><div>${contest.dayContestInviteStartText}</div><div>${contest.dayContestInviteStopText}</div></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</template>
+<script> 
+
+export default (props, { $f7, $f7router, $on, $el, $theme, $onMounted, $onBeforeUnmount, $update }) => {
+	let contestGallery;
+    let contest = [];
+	contest['gallery'] = [];
+	function showGallery(e){
+		indexImg = $(e.target).attr('data-gallery');
+		contestGallery.open(indexImg);
+	}
+	$onMounted(() => {
+		app.preloader.show();
+		app.request.postJSON(apiServer+'contest', {id: props.id}).then(function (res) {
+			if(res.data){
+				contest = res.data;
+				dayContestDate = [];
+				
+				dayContestStart = moment(contest.dayContestStart);
+				contest.dayContestStartText = dayContestStart.format('dddd, DD MMMM YYYY');
+				
+				dayContestStop = moment(contest.dayContestStop);
+				contest.dayContestStopText = dayContestStop.format('dddd, DD MMMM YYYY');
+				
+				dayContestInviteStart = moment(contest.dayContestInviteStart);
+				contest.dayContestInviteStartText = dayContestInviteStart.format('dddd, DD MMMM YYYY');
+				
+				dayContestInviteStop = moment(contest.dayContestInviteStop);
+				contest.dayContestInviteStopText = dayContestInviteStop.format('dddd, DD MMMM YYYY');
+				
+				contestGalleryArray = [];
+				contest.gallery.forEach(function(item, index, array) {
+					console.log(item, index);
+					contestGalleryArray.push("images/gallery/1600/"+item);
+				});
+				contestGallery = $f7.photoBrowser.create({
+					photos: contestGalleryArray,
+					theme: 'dark'
+				});
+
+				$update();
+				app.preloader.hide();
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	
+	});
+	$on("pageInit", function (e, page) {
+		app.preloader.hide();
+		//app.views.main.router.navigate('/admin/editpost/'+res.data+'/');
+	});
+    return $render;
+}
+</script>

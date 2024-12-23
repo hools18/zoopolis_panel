@@ -1,0 +1,33 @@
+<template>
+    <div class="page">
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	$on("pageInit", function (e, page) {
+		app.preloader.show();
+		app.request.postJSON(apiServer+'user/logout').then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.error});
+					window.location.href = baseUrl;
+				} else {
+					app.request.setup({
+						headers: {
+							'Authorization': false
+						}
+					});
+					app.preloader.hide();
+					window.location.href = baseUrl;
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+		//app.views.main.router.navigate('/admin/editpost/'+res.data+'/');
+	});
+    return $render;
+}
+</script>

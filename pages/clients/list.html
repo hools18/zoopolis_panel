@@ -1,0 +1,316 @@
+<template>
+    <div class="page clients">
+        <div class="page-content">
+            <div class="head">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-100 small-100 medium-100 large-60 xlarge-60">
+                            <h1 class="headTitle">Пользователи</h1>
+                        </div>
+                        <div class="col-100 small-100 medium-100 large-40 xlarge-40">
+                            <div class="button_gpoup heading">
+                                <button class="button col button-outline button-round sheet-open"
+                                        data-sheet=".modal-export">Экспорт в XLS<i class="right export"></i></button>
+                                <button class="button col button-fill button-round" @click=${()=> createNew()}>Добавить
+                                    нового <i class="right addnew"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div class="container">
+
+                    <div class="card data-table">
+                        <form class="filter" id="filterClients" name="filterClients">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th class="label-cell">UID</th>
+                                    <th class="label-cell">ФИО</th>
+                                    <th class="numeric-cell">Телефон</th>
+                                    <th class="numeric-cell">ЗооID</th>
+                                    <th class="numeric-cell">Зооконсьерж</th>
+                                    <th class="numeric-cell">Зоополис</th>
+                                    <th class="numeric-cell">Заблокирован</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                ${clientsList.map((data, index) => $h`
+                                <tr @click=${()=> showClient(data.id)}>
+                                    <td class="label-cell">${data.id}</td>
+                                    <td class="label-cell">${data.first} ${data.last}</td>
+                                    <td class="numeric-cell">${data.phone}</td>
+                                    <td class="numeric-cell">
+                                        ${data.zooid.status ? $h`
+                                        <div>${data.zooid.start} / <span class="gray">${data.zooid.end}</span></div>
+
+                                        <div class="active"><span></span>Активна</div>
+                                        ` : $h`
+                                        <div class="deactive">Неактивна</div>
+                                        `}
+                                    </td>
+                                    <td class="numeric-cell">
+                                        ${data.concierge.status ? $h`
+                                        <div>${data.concierge.start} / <span class="gray">${data.concierge.end}</span>
+                                        </div>
+
+                                        <div class="active"><span></span>Активна</div>
+                                        ` : $h`
+                                        <div class="deactive">Неактивна</div>
+                                        `}
+                                    </td>
+                                    <td class="numeric-cell">
+                                        ${data.zoopolis.status ? $h`
+                                        <div>${data.zoopolis.start} / <span class="gray">${data.zoopolis.end}</span>
+                                        </div>
+
+                                        <div class="active"><span></span>Активна</div>
+                                        ` : $h`
+                                        <div class="deactive">Неактивна</div>
+                                        `}
+                                    </td>
+                                    <td class="numeric-cell">
+
+                                        ${data.is_blocked == 1 ? $h`
+                                        <div class="active"><span></span>Да</div>
+                                        ` : $h`
+                                        <div class="deactive">Нет</div>
+                                        `}
+                                    </td>
+                                </tr>
+                                `)}
+                                </tbody>
+                            </table>
+                            <div class="data-table-footer">
+                                <div class="data-table-rows-select"> Отобразить:
+                                    <div class="input input-dropdown">
+                                        <select name="limit">
+                                            <option value="25">25</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="data-table-pagination">
+                                    <span class="data-table-pagination-label">1-25 из ${pagination.count_all}</span>
+                                    <a href="#" class="link disabled"> <i class="icon icon-prev color-gray"></i></a>
+                                    <a href="#" class="link"> <i class="icon icon-next color-gray"></i></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sheet-modal modal-export">
+            <div class="sheet-modal-inner success-export"
+                 style="margin: 0;position: relative;top: 50%;  transform: translateY(-50%);text-align:center;display:none">
+                <div style="margin: 0;position: absolute;  left: 15%; top: 50%;  transform: translateY(-50%);text-align: center">
+                    <i class="icon f7-icons">checkmark_alt_circle_fill</i>
+                    <h1 class="headForm" style="font-size: 30px; line-height: 30px;">Экспорт успешно завершен</h1>
+                </div>
+            </div>
+            <div class="sheet-modal-inner cancel-export"
+                 style="margin: 0;position: relative;top: 50%;transform:translateY(-50%);text-align:center;display:none">
+                <div style="margin: 0;position: absolute;  top: 50%; left: 15%;  transform: translateY(-50%);text-align: center">
+                    <i class="icon f7-icons">xmark_circle_fill</i>
+                    <h1 class="headForm" style="font-size: 30px; line-height: 30px;">Ошибка экспорта. Попробуйте
+                        позднее</h1>
+                </div>
+            </div>
+            <div class="sheet-modal-inner show-export">
+                <div class="info">
+                    <div class="modal-title">Экспорт в XLMS</div>
+                    <div class="modal-body">
+                        <form id="exportForm">
+                            <div class="list">
+                                <ul>
+                                    <li>
+                                        <label class="item-checkbox item-content">
+                                            <input type="checkbox" value="phone" checked name="fields[]"/>
+                                            <i class="icon icon-checkbox"></i><div class="item-inner"><div class="item-title">Телефон</div></div>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="item-checkbox item-content">
+                                            <input type="checkbox" checked value="email" name="fields[]"/>
+                                            <i class="icon icon-checkbox"></i>
+                                            <div class="item-inner"><div class="item-title">Е-майл</div></div>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="item-checkbox item-content">
+                                            <input type="checkbox" checked value="first" name="fields[]"/>
+                                            <i class="icon icon-checkbox"></i>
+                                            <div class="item-inner"><div class="item-title">Имя</div></div>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="item-checkbox item-content">
+                                            <input type="checkbox" checked value="last" name="fields[]"/>
+                                            <i class="icon icon-checkbox"></i>
+                                            <div class="item-inner"><div class="item-title">Фамилия</div></div>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="item-checkbox item-content">
+                                            <input type="checkbox" checked value="level" name="fields[]"/>
+                                            <i class="icon icon-checkbox"></i>
+                                            <div class="item-inner"><div class="item-title">Роль</div></div>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="item-checkbox item-content">
+                                            <input type="checkbox" checked value="is_blocked" name="fields[]"/>
+                                            <i class="icon icon-checkbox"></i>
+                                            <div class="item-inner"><div class="item-title">Статус блокировки</div></div>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <button class="col button button-outline button-round" @click=${()=> getXLMS()}>
+                    Экспортировать
+                </button>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    export default (props, {
+        $f7,
+        $f7router,
+        $el,
+        $update,
+        $on,
+        $onBeforeMount,
+        $onMounted,
+        $onBeforeUpdate,
+        $onUpdated,
+        $onBeforeUnmount,
+        $onUnmounted,
+        $store,
+        $context
+    }) => {
+
+        let clientsList = [];
+        let pagination = [];
+        function showClient(id) {
+            $f7.views[1].router.navigate('/client/' + id + '/');
+        }
+        function getXLMS() {
+            let formData = new FormData($('#exportForm')[0])
+            if($('[name="fields[]"]:checked').length){
+                app.request({
+                    url: apiServer + 'console/client/export',
+                    data: formData,
+                    type: 'post',
+                    xhrFields: {
+                        responseType: 'blob',
+                    }
+                }).then(function (res) {
+                    let blob = new Blob([res.data]);
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'users.xlsx';
+                    link.click();
+                    $('.show-export').hide();
+                    $('.success-export').show()
+                }).catch(() => {
+                    $('.show-export').hide();
+                    $('.cancel-export').show();
+                })
+            } else {
+                alert('Выберите минимум одно поле для выгрузки')
+            }
+
+        }
+
+        function createNew() {
+            $f7.dialog.prompt('Введите номер телефона', function (phone) {
+                $f7.dialog.confirm('Номер телефона указан ' + phone + ' указан верно?', function () {
+                    fetch(apiServer + 'console/client/createnewclient', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            login: phone
+                        }),
+                        headers: headers()
+                    })
+                        .then((res) => res.json())
+                        .then(function (data) {
+                            if (data.err) {
+                                $store.dispatch('msgalert', {err: data.err});
+                            } else {
+                                $store.dispatch('msgalert', {err: 'Новый пользователь зарегистрирован. Заполните информацию.'});
+                                $f7.views[1].router.navigate('/client/' + data.userID + '/');
+                            }
+                        });
+
+                });
+            });
+        }
+
+        function getClietsList() {
+
+            $f7.preloader.show();
+            var formData = $f7.form.convertToData('#filterPromo');
+            console.log(formData);
+
+            fetch(apiServer + 'console/clients/search', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: headers()
+            })
+                .then((res) => res.json())
+                .then(function (data) {
+                    clientsList = data.client;
+                    pagination = data.pagination;
+                    for (var k in clientsList) {
+                        if (clientsList[k].zooid) {
+                            if (clientsList[k].zooid.start) {
+                                clientsList[k].zooid.start = moment(clientsList[k].zooid.start, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                            if (clientsList[k].zooid.end) {
+                                clientsList[k].zooid.end = moment(clientsList[k].zooid.end, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                        }
+                        if (clientsList[k].concierge) {
+                            if (clientsList[k].concierge.start) {
+                                clientsList[k].concierge.start = moment(clientsList[k].concierge.start, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                            if (clientsList[k].concierge.end) {
+                                clientsList[k].concierge.end = moment(clientsList[k].concierge.end, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                        }
+                    }
+
+                    //zooid.endtextdata = moment(zooid.end, "YYYYMMDD").format('D MMMM YYYY');
+                    $update();
+                });
+
+            $f7.preloader.hide();
+        }
+
+        $on("pageInit", function (e, page) {
+            getClietsList();
+
+            $('#filterPromo [name="filter"]').on('change', function (e) {
+                getClietsList();
+            });
+            let modalExport = $f7.sheet.create({
+                el: '.modal-export',
+            });
+            modalExport.on('close', function () {
+                $('.success-export').hide()
+                $('.cancel-export').hide()
+                $('.show-export').show();
+            })
+        });
+        return $render;
+    }
+</script>

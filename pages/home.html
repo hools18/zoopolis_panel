@@ -1,0 +1,37 @@
+<template>
+    <div class="page">
+        <div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+							<h1 class="headTitle">Главная</h1>
+						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+
+    </div>
+</template>
+
+<script>
+
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store }) => {
+	let articlesList = [];
+
+	$on("pageInit", function (e, page) {
+	});
+	$on('pageAfterIn', function (e, page) {
+		$store.dispatch('checkToken').then(function(checkToken) {
+			if(checkToken){
+	
+			} else {
+				$f7.views[1].router.navigate('/login');
+			}
+		});
+    });
+
+    return $render;
+}
+</script> 

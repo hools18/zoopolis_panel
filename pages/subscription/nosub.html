@@ -1,0 +1,25 @@
+<template>
+    <div class="page auth">
+		<a href="/subscribing" class="closeToHome"><img src="assets/icon_close.svg"/></a>
+        <div class="page-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+						<h1 class="headForm">У вас нет активной подписки</h1>
+						<div class="afterhead">Пожалуйста перейдите к подпискам</div>
+						<a href="/subscribing" class="button button-outline icon" style="margin: 0 auto; margin-top: 40px;">Перейти к подпискам</a>
+					</div>
+				</div>
+			</div>		
+        </div>
+    </div>
+</template>
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	$on('pageInit', () => {
+	
+	});
+    return $render;
+}
+</script>

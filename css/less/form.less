@@ -1,0 +1,119 @@
+input[type=date], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], select, textarea {
+	background: #F4F4F9;
+	border-radius: 10px;
+	
+	font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    color: #161616;
+}
+input[type=date], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], select {
+	height: 55px;
+	padding: 15px 25px;
+    width: 100%;
+	
+	
+}
+.dataForm{
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    gap: 15px;
+	>div{
+		width: 100%;
+		position: relative;
+		
+		&.mtop{
+			margin-top: 25px;
+		}
+	}
+	.show-password{
+		display: none;
+		&:checked{
+			~ label .input{
+				text-security: disc;
+				-webkit-text-security: disc;
+				-moz-text-security: disc;
+			}
+
+		}
+	}
+	.show_eye{
+	    position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 2;
+		height: 55px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		padding: 0 26px;
+		cursor: pointer;
+		img{
+			display: block;
+		}
+	}
+
+	.recovery{
+		font-size: 18px;
+		line-height: 25px;
+		text-align: right;
+		letter-spacing: -0.015em;
+		color: #161616;
+		opacity: 0.4;
+		display: block;
+	}
+	label{
+		position: relative;
+		&[data-err]{
+			input{
+				box-shadow: 0 0 0 1px #EC5353;
+				margin-bottom: 15px;
+			}
+			&:after {
+				content: attr(data-err);
+				color: #f00;
+				position: absolute;
+				bottom: -22px;
+				left: 20px;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 18px;
+				color: #EC5353;
+			}
+		}
+		&[data-err]:focus:after {
+			content: "";
+		}
+		
+		&[data-err=""]{
+			input{
+				box-shadow: inherit;
+				margin-bottom: 0;
+			}
+			&:after {
+				display: none;
+			}
+		}
+
+	}
+	
+	&#promocode{
+	    max-width: 100%;
+		flex-direction: row;
+		margin-top: 15px;
+		input{
+			height: 55px;
+			background: #FFFFFF;
+			border-radius: 10px;
+		}
+	}
+
+}

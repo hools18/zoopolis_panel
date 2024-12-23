@@ -1,0 +1,108 @@
+<template>
+    <div class="page page-pd page-create">
+        <div class="page-content">
+		
+<section id="login-3" class="rel bg-fixed login-section division">
+	<div class="container">
+		<div class="row">
+			<div class="col-50 xsmall-50 small-50 medium-35 large-35 xlarge-35">
+				<div class="register-form">
+					<form id="userCreate" name="userCreate" class="row sign-in-form">
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+							<div class="register-form-title">
+								<h3 class="h3-xs">Регистрация на портале</h3>
+							</div>
+						</div>
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+							<input class="form-control email" type="email" name="email" placeholder="pochta@mail.ru"/>
+						</div>
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+							<div class="wrap-input">
+								<span class="btn-show-pass ico-20"><span class="flaticon-visible eye-pass"></span></span>
+								<input class="form-control password" type="password" name="pass" maxlength="18" placeholder="Пароль"/>
+							</div>
+						</div>
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+							<a href="#" class="button btn btn-md btn-skyblue tra-black-hover submit createSend">Создать аккаунт</a>
+						</div>
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+							<div class="d-flex justify-content-around align-items-center form-data">
+								<div class="item-title item-label info">Нажимая "Создать аккаунт" Вы соглашаетесь с <a href="/polit/">политикой кофиденциальности</a> и <a href="/rules/">правилами использования ресурса</a>.</div>
+							</div>
+						</div>
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100 text-center">
+							<div class="login-separator"> <span class="login-separator-txt">ИЛИ</span> </div>
+						</div>
+						<div class="col-100 xsmall-100 small-100 medium-100 large-100 xlarge-100">
+							<a href="#" class="button btn btn-google ico-left mb-10"> Войти с помощью VK.COM </a>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-50 xsmall-50 small-50 medium-65 large-65 xlarge-65">
+				<div class="login-3-img text-center">
+					<img class="img-fluid" src="images/register.png" alt="register-image"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+        </div>
+    </div>
+</template>
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	$on('pageInit', () => {
+
+		$('.createSend').on('click', function () {
+			var formData = $f7.form.convertToData('#userCreate');
+			app.preloader.show();
+			$store.dispatch('validemail', {email: formData.email}).then(function(verEmail) {
+				if(verEmail == true){
+					if(formData.pass.length <= 7 ){
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: 'Минимальная длина пароля 8 символов'});
+					} else {
+						app.request.postJSON(apiServer+'user/create', formData).then(function (res) {
+							if(res.data){
+								if(res.data.err){
+									app.preloader.hide();
+									$store.dispatch('msgalert', {err: res.data.err});
+								} else {
+									// Продолжаем регистрацию.
+									if(res.data.token){
+										app.form.storeFormData('token', res.data.token);
+										app.form.storeFormData('userid', res.data.userID);
+										app.request.setup({
+											headers: {
+												'Authorization': res.data.token
+											}
+										});
+										window.location.href = "https://xn----gtbdmfeda0ajydjdy.xn--p1ai";
+									} else {
+										app.preloader.hide();
+										$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+									}
+									
+								}
+								
+							} else {
+								app.preloader.hide();
+								$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+							}
+							
+						});
+					};
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: 'Email введен с ошибками'});
+				}
+			});
+		});
+
+	});
+    return $render;
+}
+</script>

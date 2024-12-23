@@ -1,0 +1,130 @@
+<template>
+    <div class="page page-pd page-profile">
+        <div class="page-content">
+			<div class="container">
+
+				<section id="blog-page" class="bg-snow wide-50 inner-page-hero blog-page-section division">
+					<div class="container">
+						<div class="row justify-content-center">	
+							<div class="col-md-10 col-lg-8">
+								<div class="section-title title-02 mb-85">	
+									<h2 class="h2-xs">Полный список конкурсов</h2>
+									<form data-search-container=".virtual-list-vdom" data-search-item="li" data-search-in=".item-title" class="searchbar searchbar-init">
+										<div class="searchbar-inner">
+											<div class="searchbar-input-wrap">
+												<input type="search" placeholder="Поиск" />
+												<i class="searchbar-icon"></i>
+												<span class="input-clear-button"></span>
+											</div>
+											<span class="searchbar-disable-button if-not-aurora">Очистить</span>
+										</div>
+									</form>
+								</div>	
+							</div>
+						</div>
+
+					</div>
+				</section>
+			
+				<div class="contestslist virtual-list virtual-list-vdom media-list searchbar-found">
+					<ul>
+					${contests.items.map((item) => $h`
+					
+					<li class="rel blog-post-wide">
+						<div class="row d-flex ">
+							<div class="col-40 xsmall-40 small-40 medium-40 large-40 xlarge-40 blog-post-img">
+								<div class="hover-overlay">
+									<div class="img-fluid" style="background-image: url(images/logos/500/${item.logo})" data-background="images/logos/500/${item.logo}" class="lazy lazy-fade-in"></div>
+									<div class="item-overlay"></div>
+								</div>
+							</div>
+							<!-- BLOG POST TEXT -->
+							<div class="col-60 xsmall-60 small-60 medium-60 large-60 xlarge-60 blog-post-txt">
+								<!-- Post Tag -->
+								<p class="p-md post-tag">${item.dayContestStartText} - ${item.dayContestStopText}</p>
+								<!-- Post Link -->
+								<h5 class="h5-xl">
+									<a href="/contest/${item.id}">${item.name} ${item.id}</a>
+								</h5>
+								<!-- Text -->
+								<p class="p-lg">${item.predesc}</p>
+								<!-- Post Meta -->
+								<div class="post-meta">
+									<a href="/contest/${item.id}" class="link">Подробнее</a>
+								</div>
+							</div>
+							<!-- END BLOG POST TEXT -->
+						</div>
+						<!-- End row -->
+					</li>
+					`)}
+					</ul>
+				</div>
+			</div>
+        </div>
+    </div>
+</template>
+<script> 
+
+export default (props, { $f7, $f7router, $store, $on, $el, $theme, $onMounted, $onBeforeUnmount, $update }) => {
+	let items = [];
+    let contests = {items: []};
+	let virtualList;
+	
+	function createContest(){
+		$store.dispatch('createNewContest', {});
+	}
+	$onMounted(() => {
+		app.preloader.show();
+		app.request.postJSON(apiServer+'contests').then(function (res) {
+			if(res.data){
+				items = res.data;
+				items.forEach(function(item, index, array) {
+					items[index]['dayContestInviteStop']
+					
+					dayContestStart = moment(items[index]['dayContestStart']);
+					items[index].dayContestStartText = dayContestStart.format('dddd, DD MMMM YYYY');
+					
+					dayContestStop = moment(items[index]['dayContestStop']);
+					items[index].dayContestStopText = dayContestStop.format('dddd, DD MMMM YYYY');
+					
+					dayContestInviteStart = moment(items[index]['dayContestInviteStart']);
+					items[index].dayContestInviteStartText = dayContestInviteStart.format('dddd, DD MMMM YYYY');
+					
+					dayContestInviteStop = moment(items[index]['dayContestInviteStop']);
+					items[index].dayContestInviteStopText = dayContestInviteStop.format('dddd, DD MMMM YYYY');
+				});
+				virtualList = $f7.virtualList.create({
+					el: $el.value.find('.contestslist'),
+					items,
+					searchAll: function (query, items) {
+						var found = [];
+						for (var i = 0; i < items.length; i++) {
+							if (items[i].name.toLowerCase().indexOf(query.toLowerCase()) >= 0 || query.trim() === '') found.push(i);
+						}
+						return found;
+					},
+					renderExternal(vl, vlData) {
+						contests = vlData;
+						$update();
+						$('img.lazy').trigger('lazy');
+					}
+				});
+				
+				$update();
+				app.preloader.hide();
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	
+	});
+	$on("pageInit", function (e, page) {
+		app.preloader.hide();
+		
+		//app.views.main.router.navigate('/admin/editpost/'+res.data+'/');
+	});
+    return $render;
+}
+</script>

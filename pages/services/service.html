@@ -1,0 +1,239 @@
+<template>
+    <div class="page profile client">
+		<div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-60 xlarge-60">
+							<h1 class="headTitle">Настройки подписки</h1>
+						</div>
+						<div class="col-100 small-100 medium-100 large-40 xlarge-40">
+							<div class="button_gpoup heading">
+								<button class="button col button-fill button-round" @click=${()=> createNew()}>Добавить услугу <i class="right addnew"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">
+					<div class="row">	
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+<div class="data-table nohover card">
+	<table>
+		<thead>
+			<tr>
+				<th class="label-cell">Название</th>
+				<th class="numeric-cell" style="max-width: 7em; text-align: left;">BYN</th>
+				<th class="numeric-cell" style="max-width: 7em; text-align: left;">RUB</th>
+
+				<th class="numeric-cell" style="width: 25px;"></th>
+				<th class="numeric-cell" style="width: 25px;"></th>
+				<th class="numeric-cell" style="width: 7em;"></th>
+			</tr>
+		</thead>
+		<tbody>
+			${serviceList.map((data, index) => $h`
+			<tr data-service="${data.id}" class="userforms service" id="service${data.id}" name="service${data.id}">
+				
+				<td class="label-cell"><input class="input" name="name" type="text" value="${data.name}" @input=${()=> updateService(data.id)}/></td>
+				<td class="numeric-cell" style="max-width: 7em;"><input class="input" name="BYN" type="number" value="${data.BYN}" @input=${()=> updateService(data.id)} style="max-width: 6em;"/></td>
+				<td class="numeric-cell" style="max-width: 7em;"><input class="input" name="RUB" type="number" value="${data.RUB}" @input=${()=> updateService(data.id)} style="max-width: 6em;"/></td>
+				
+				<td class="numeric-cell" style="width: 25px;">
+					${data.hide ? $h`
+						<a class="showService" href="#" @click=${()=> serviceShow(data.id)}><i class="show"></i></a>
+					` : $h`
+						<a class="hideService" href="#" @click=${()=> serviceHide(data.id)}><i class="hide"></i></a>
+					`}
+					
+					
+				</td>
+				<td class="numeric-cell">
+					<a class="deleteService" href="#" @click=${()=> serviceDelete(data.id)}><i class="delete"></i></a>
+				</td>
+				<td class="numeric-cell" style="width: 7em;"><a style="display: none;" href="#" class="savebtn col button button-fill" @click=${()=> serviceUpdate(data.id)}>Сохранить</a></td>
+			</tr>	
+			`)}
+		</tbody>
+	</table>
+</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+    </div>
+
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let promoend;
+	
+	let promostart;
+	let promo = [];
+	let tagslist = [];
+	let citylist = [];
+	
+	let serviceList = [];
+	
+	function updateService(e){
+		$('tr[data-service="'+e+'"] .savebtn').show();
+		$update();
+	}
+	
+	function createNew(){
+		$f7.dialog.prompt('Введите название', function (name) {
+			$f7.dialog.confirm('Название услуги "' + name + '" написано верно?', function () {
+				fetch(apiServer+'console/newservice/'+props['service'], {
+					method: 'POST', 
+					body: JSON.stringify({
+						name: name
+					}),
+					headers: headers()
+				})
+				.then((res) => res.json())
+				.then(function (data) {
+					if(data.err){
+						$store.dispatch('msgalert', {err: data.err});
+					} else {
+						$store.dispatch('msgalert', {err: 'Услуга добавлена. Заполните информацию.'});
+						getServiceData();
+					}
+				});
+
+			});
+		});
+	}
+
+	function serviceUpdate(id){
+		app.preloader.show();
+		let formData = $f7.form.convertToData('.service[name="service'+id+'"]');
+		app.request.postJSON(apiServer+'console/serviceupdate/'+props['service']+'/'+id, formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: res.data.error
+					});
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: 'Информация сохранена'
+					});
+					getServiceData();
+					$('tr .savebtn').hide();
+				}							
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}							
+		});
+		app.preloader.hide();
+	}
+	function serviceDelete(id){
+		$f7.dialog.confirm('Удалять можно только случайно созданную услугу. Услуги завязаны на подписки клиентов. Не удалять рабочую услугу!', function () {
+			fetch(apiServer+'console/deleteservice/'+props['service']+'/'+id, {
+				method: 'POST', 
+				body: JSON.stringify(),
+				headers: headers()
+			})
+			.then((res) => res.json())
+			.then(function (data) {
+				if(data.err){
+					$store.dispatch('msgalert', {err: data.err});
+				} else {
+					$store.dispatch('msgalert', {err: 'Услуга удалена из списка.'});
+					getServiceData();
+				}
+			});
+		});
+	}
+	
+	function serviceHide(id){
+		$f7.dialog.confirm('Услуга будет скрыта для клиентов', function () {
+			fetch(apiServer+'console/hideservice/'+props['service']+'/'+id, {
+				method: 'POST', 
+				body: JSON.stringify(),
+				headers: headers()
+			})
+			.then((res) => res.json())
+			.then(function (data) {
+				if(data.err){
+					$store.dispatch('msgalert', {err: data.err});
+				} else {
+					$store.dispatch('msgalert', {err: 'Статус услуги обновлен.'});
+					getServiceData();
+				}
+			});
+		});
+	}
+	function serviceShow(id){
+		$f7.dialog.confirm('Услуга снова отобразится у клиентов', function () {
+			fetch(apiServer+'console/showservice/'+props['service']+'/'+id, {
+				method: 'POST', 
+				body: JSON.stringify(),
+				headers: headers()
+			})
+			.then((res) => res.json())
+			.then(function (data) {
+				if(data.err){
+					$store.dispatch('msgalert', {err: data.err});
+				} else {
+					$store.dispatch('msgalert', {err: 'Статус услуги обновлен.'});
+					getServiceData();
+				}
+			});
+		});
+	}
+	
+	function updatePromo(){
+		app.preloader.show();
+
+		app.request.postJSON(apiServer+'console/promosave/'+props['id'], formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: res.data.error
+					});
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: 'Информация сохранена'
+					});
+					getPromoData();
+				}							
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}							
+		});
+	}
+
+	function getServiceData(){
+		$f7.preloader.show();
+
+		fetch(apiServer+'console/servicelist/'+props['service'], {
+			method: 'POST', 
+			headers: headers()
+		})
+		.then((res) => res.json())
+		.then(function (data) {
+			serviceList = data;			
+			$f7.preloader.hide();	
+			$update();
+			console.log(serviceList);
+		});
+	}
+	$on("pageInit", function (e, page) {
+		getServiceData();
+
+	});
+    return $render;
+}
+</script>

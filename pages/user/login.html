@@ -1,0 +1,103 @@
+<template>
+    <div class="page auth">
+        <div class="page-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+						<h1 class="headForm">Вход</h1>
+					</div>
+					<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+						<form class="dataForm" id="login" name="login">
+							<div>
+								<label data-err="${login.login}">
+									<input class="input" name="login" type="text" placeholder="Номер телефона" required/>
+								</label>
+							</div>
+							<div>
+								<input type="checkbox" id="show-password" class="show-password" checked/>
+								<label for="show-password" class="show_eye">
+									<img src="assets/icon_eye.svg"/>
+								</label>
+								<label data-err="${login.password}">
+									<input id="password" class="input" name="password" type="text" placeholder="Пароль" required/>
+								</label>
+							</div>
+							<div class="mtop">
+								<a href="#" class="button button-outline button-round" @click=${userLogin}>Войти</a>
+							</div>
+						</form>	
+					</div>
+				</div>
+			</div>		
+        </div>
+    </div>
+</template>
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let userCreateError = {};
+	let userUserLogin = {};
+	let login = {};
+	function userLogin(){
+		valid = true;
+		formData = $f7.form.convertToData('#login');
+		
+		if(formData.login.length <= 3 ){
+			valid = false;
+			login['login'] = 'Неверный формат номера телефона';
+			$store.dispatch('msgalert', {err: 'Неверный формат номера телефона'});
+		} else {
+			login['login'] = '';
+		}
+		if(formData.password.length <= 7 ){
+			valid = false;
+			$store.dispatch('msgalert', {err: 'Минимальная длина пароля 8 символов'});
+			login['password'] = 'Минимальная длина пароля 8 символов';
+		} else {
+			login['password'] = '';
+		}
+		if(valid == true){
+			let fixLogin = formData.login;
+			formData.login = fixLogin.replace(/\D/g,'');
+			$store.dispatch('pass', {pass: formData.password}).then(function(password) {
+				formData.password = password;
+				app.request.postJSON(apiServer+'user/login', formData).then(function (res) {
+					if(res.data){
+						if(res.data.err){
+							app.preloader.hide();
+							$store.dispatch('msgalert', {err: res.data.err});
+							login = res.data;
+							$update();
+						} else {
+							if(res.data.token){
+								app.form.storeFormData('token', res.data.token);
+								app.request.setup({
+									headers: {
+										'Authorization': res.data.token
+									}
+								});
+								window.location.href = baseUrl;
+							} else {
+								app.preloader.hide();
+								$store.dispatch('msgalert', {err: 'Try later'});
+							}										
+						}									
+					} else {
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: 'Try later'});
+					}							
+				});
+			});
+		} else {
+			$update();
+			app.preloader.hide();
+		}
+		
+	}
+
+	$on('pageInit', () => {
+	
+	});
+    return $render;
+}
+</script>

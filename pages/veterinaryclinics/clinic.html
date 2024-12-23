@@ -1,0 +1,243 @@
+<template>
+    <div class="page clinics">
+		<div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-60 xlarge-60">
+							<h1 class="headTitle">Информация о клинике</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">
+	
+
+					
+					<form class="dataForm" id="editClinic" name="editClinic">
+						<div>
+							<div class="name">Название клиники</div>
+							<label>
+								<input class="input" name="name" type="text" placeholder="Название клиники" value="${clinic.name}"/>
+							</label>
+						</div>
+						<div>
+							<div class="name">Адрес</div>
+							<label>
+								<input class="input" name="addr" type="text" placeholder="Адрес" value="${clinic.addr}"/>
+							</label>
+						</div>
+						<div>
+							<div class="name">Ссылка на сайт</div>
+							<label>
+								<input class="input" name="link" type="text" placeholder="Ссылка на сайт" value="${clinic.link}"/>
+							</label>
+						</div>
+						<div>
+							<div class="name">Номер телефона</div>
+							<label>
+								<input class="input" name="phone" type="text" placeholder="Номер телефона" value="${clinic.phone}"/>
+							</label>
+						</div>
+						<div>
+							<div class="name">Номер телефона #2</div>
+							<label>
+								<input class="input" name="phone2" type="text" placeholder="Номер телефона #2" value="${clinic.phone2}"/>
+							</label>
+						</div>
+						
+						<div>
+							<div class="name">Время работы</div>
+							<label>
+								<div class="text-editor text-editor-init timework" data-placeholder="Время работы клиники"
+									data-buttons='["bold", "italic", "underline", "strikeThrough"]' data-mode="popover"
+									style="--f7-text-editor-height: 150px">
+									<div class="text-editor-content" innerHTML=${clinic.timework} contenteditable></div>
+								</div>
+							</label>
+						</div>
+						
+						<div>
+							<div class="name">Информация о клинике</div>
+							<label>
+								<div class="text-editor text-editor-init desc" data-placeholder="Информация о клинике"
+									data-buttons='["bold", "italic", "underline", "strikeThrough"]' data-mode="popover"
+									style="--f7-text-editor-height: 150px">
+									<div class="text-editor-content" innerHTML=${clinic.desc} contenteditable></div>
+								</div>
+							</label>
+						</div>
+						
+							
+						
+						<div id="veterinaryclinicsmap"></div>
+						
+						<div>
+							<div class="name">Координаты расположения</div>
+							<label>
+								<input class="input" name="coordinates" type="text" placeholder="[]" value="${clinic.coordinates}"/>
+							</label>
+						</div>
+						
+						<div>
+							<a href="#" class="col button button-fill" @click=${updateClinic}>Сохранить изменения</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+
+    </div>
+
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let clinic = [];
+	
+	let querystring = {
+		parse: function(s) {
+			var params = {};
+			try {
+				if(s.indexOf('?') > -1) {
+					s = s.split('?')[1];
+				}
+				s.replace(/[^?&]+(?=&|$)/g, function(s) {
+					var param = s.split('=');
+					params[decodeURI(param[0])] = decodeURIComponent(param[1]);
+				});
+			} catch(e) {}
+			return params;
+		},
+		stringify: function(data) {
+			var params = [];
+			try {
+				for(var param in data) {
+					params.push(encodeURI(param) + '=' + encodeURIComponent(data[param]));
+				}
+			} catch(e) {}
+			return params.join('&');
+		},
+	};
+
+	var coordOrder = 'latlong';
+
+
+	function getClinic(){	
+		fetch(apiServer+'vetclinic/'+props['id'], {
+			method: 'POST', 
+			body: JSON.stringify(),
+			headers: headers()
+		})
+		.then((res) => res.json())
+		.then(function (data) {
+			let mapCenter = [53.905971, 27.556458];
+			let zoom = 9;
+			if(data.coordinates){
+				mapCenter = data.coordinates;
+				zoom = 16;
+			} else {
+				
+			}
+
+            var map = new ymaps.Map('veterinaryclinicsmap', {
+                    center: mapCenter,
+                    zoom: zoom
+                }, {
+                    searchControlNoPlacemark: true
+                });
+            ymaps.modules.require([
+                'GeoObjectEditor',
+                'MapStateInfo',
+                'DemoControl'
+            ]).spread(function (GeoObjectEditor, MapStateInfo, DemoControl) {
+                var geoObjectEditor = new GeoObjectEditor(map);
+                var mapState = new MapStateInfo(map);
+                map.controls.add(new DemoControl({ coordOrder: coordOrder }));
+
+            });
+			
+			map.events.add('click', function (e) {
+				if (!map.balloon.isOpen()) {
+					var coords = e.get('coords');
+					
+					clinic.coordinates = coords[0].toPrecision(8) +' '+coords[1].toPrecision(8);
+					$update();
+					map.balloon.open(coords, {
+						contentHeader:'Координаты позиции',
+						contentBody:'' +
+							'<p>Данные точки: ' + [
+							coords[0].toPrecision(8),
+							coords[1].toPrecision(8)
+							].join(', ') + '</p>',
+						contentFooter:'<sup>При клике данные в поле координат должны обновиться.</sup>'
+					});
+				}
+				else {
+					map.balloon.close();
+				}
+			});
+			
+			if(data.coordinates){
+				map.balloon.open(mapCenter, {
+					contentHeader:'Координаты позиции',
+					contentBody:'' +
+						'<p>Данные точки: ' + [
+							mapCenter[0].toPrecision(8),
+							mapCenter[1].toPrecision(8)
+						].join(', ') + '</p>',
+					contentFooter:'<sup>При клике данные в поле координат должны обновиться.</sup>'
+				});
+			}
+			map.events.add('contextmenu', function (e) {
+				//map.hint.open(e.get('coords'), 'Кто-то щелкнул правой кнопкой');
+			});
+			map.events.add('balloonopen', function (e) {
+				map.hint.close();
+			});
+			
+
+			
+			clinic = data;
+			if(clinic.coordinates){
+				clinic.coordinates = clinic.coordinates[0].toPrecision(8) +' '+clinic.coordinates[1].toPrecision(8);
+			}
+			
+			$update();
+		});		
+		
+	}
+	function updateClinic(){
+		let formData = $f7.form.convertToData('#editClinic');
+		
+		let desc = $f7.textEditor.get('#editClinic .desc');
+		let timework = $f7.textEditor.get('#editClinic .timework');	
+		formData['desc'] = desc.value;
+		formData['timework'] = timework.value;
+		fetch(apiServer+'vetclinicupd/'+props['id'], {
+			method: 'POST', 
+			body: JSON.stringify(formData),
+			headers: headers()
+		})
+		.then((res) => res.json())
+		.then(function (data) {
+			if(data.err){
+				$f7.preloader.hide();
+				$store.dispatch('msgalert', {
+					err: data.err
+				});
+			} else {
+				$store.dispatch('msgalert', {
+					err: 'Информация обновлена.'
+				});
+							
+			}
+		});
+	}
+	$on("pageInit", function (e, page) {
+		getClinic();
+	});
+    return $render;
+}
+</script>

@@ -1,0 +1,75 @@
+<template>
+    <div class="page auth">
+		<a href="/" class="closeToHome"><img src="assets/icon_close.svg"/></a>
+        <div class="page-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+						<h1 class="headForm">Восстановление пароля</h1>
+						<div class="afterhead">Мы отправим вам на почту ссылку<br/>для восстановления пароля</div>
+					</div>
+					<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+						<form class="dataForm" id="recovery" name="recovery">
+							<div>
+								<label data-err="${recovery.email}">
+									<input class="input" name="email" type="email" placeholder="Email" required/>
+								</label>
+							</div>
+							<div class="mtop">
+								<a href="#" class="button button-outline button-round" @click=${userRecovery}>Отправить</a>
+							</div>
+						</form>	
+					</div>
+				</div>
+			</div>		
+        </div>
+    </div>
+</template>
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let recovery = {};
+	function userRecovery(){
+		valid = true;
+		formData = $f7.form.convertToData('#recovery');
+		$store.dispatch('validemail', {email: formData.email}).then(function(verEmail) {
+			if(verEmail == true){
+				app.request.postJSON(apiServer+'user/recovery', formData).then(function (res) {
+					if(res.data){
+						if(res.data.err){
+							app.preloader.hide();
+							$store.dispatch('msgalert', {err: res.data.err});
+							login = res.data;
+							$update();
+						} else {
+							$store.dispatch('msgalert', {
+								err: 'Ссылка на восстановления доступа отправлена на указанный почтовый ящик.',
+								title: 'Успешно'
+							});									
+						}									
+					} else {
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: 'Try later'});
+					}							
+				});
+			} else {
+				valid = false;
+				recovery['email'] = 'Неверный формат Email адреса';
+				$store.dispatch('msgalert', {
+					err: 'Неверный формат Email адреса',
+					title: 'Ошибка'
+				});
+				$update();
+			}
+		});
+
+			
+
+	};
+
+	$on('pageInit', () => {
+	
+	});
+    return $render;
+}
+</script>

@@ -1,0 +1,611 @@
+<template>
+    <div class="page profile">
+        <div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+							<h1 class="headTitle">Мой профиль</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">
+				
+					<div class="row">		
+
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+							<div class="toolbar tabbar toolbar-bottom">
+								<div class="toolbar-inner">
+									<a href="#profile" class="tab-link tab-link-active">Контактные данные</a>
+									<a href="#addr" class="tab-link">Адрес</a>
+									<a href="#petsinfo" class="tab-link">Информация о питомце</a>
+								</div>
+							</div>
+							<div class=" ">
+								<div class="tabs">
+									<div id="profile" class="page-content tab tab-active">
+										<form class="dataForm" id="userData" name="userData">
+											<div class="headForm">Контактные данные</div>
+											<div>
+												<div class="name">Имя</div>
+												<label data-err="${userDataError.first}">
+													<input class="input" name="first" type="text" placeholder="Имя" value="${profile.first}" @input=${updateUserData}/>
+														${update.first ? $h`
+															<a href="#" class="button button-fill save" @click=${saveDataProfile}>Сохранить</a>
+															<a href="#" name="first" class="button сancel" @click=${updateUserDataCancel}>Отменить</a>
+														` : $h` `}
+												</label>
+											</div>
+											<div>
+												<div class="name">Фамилия</div>
+												<label data-err="${userDataError.last}">
+													<input class="input" name="last" type="text" placeholder="Фамилия" value="${profile.last}" @input=${updateUserData}/>
+													${update.last ? $h`
+														<a href="#" class="button button-fill save" @click=${saveDataProfile}>Сохранить</a>
+														<a href="#" name="last" class="button сancel" @click=${updateUserDataCancel}>Отменить</a>
+													` : $h` `}
+												</label>
+											</div>
+											<div>
+												<div class="name">Номер телефона</div>
+												<label data-err="${userDataError.phone}">
+													<input class="input" name="phone" type="text" placeholder="Номер телефона" value="${profile.phone}" @input=${updateUserData}/>
+													${update.phone ? $h`
+														<a href="#" class="button button-fill save" @click=${saveDataProfile}>Сохранить</a>
+														<a href="#" name="phone" class="button сancel" @click=${updateUserDataCancel}>Отменить</a>
+													` : $h` `}
+												</label>
+											</div>
+											
+											${profile.phone_other_1 ? $h`
+											<div>
+												<div class="name">Дополнительный номер телефона</div>
+												<label data-err="${userDataError.phone_other_1}">
+													<input class="input" name="phone_other_1" type="text" placeholder="Номер телефона" value="${profile.phone_other_1}" @input=${updateUserData}/>
+													${update.phone_other_1 ? $h`
+														<a href="#" class="button button-fill save" @click=${saveDataProfile}>Сохранить</a>
+														<a href="#" name="phone_other_1" class="button сancel" @click=${updateUserDataCancel}>Отменить</a>
+													` : $h` `}
+												</label>
+											</div>
+											` : $h`
+												<div>
+													<div class="addMorePhone" data-phone="1" @click=${addMorePhone}>
+														<div>Ввести дополнительный номер</div>
+														<img src="assets/icon_plus.svg" />
+													</div>
+												</div>
+											`}
+											
+											${profile.phone_other_2 ? $h`
+											<div>
+												<div class="name">Дополнительный номер телефона</div>
+												<label data-err="${userDataError.phone_other_2}">
+													<input class="input" name="phone_other_2" type="text" placeholder="Номер телефона" value="${profile.phone_other_2}" @input=${updateUserData}/>
+													${update.phone_other_2 ? $h`
+														<a href="#" class="button button-fill save" @click=${saveDataProfile}>Сохранить</a>
+														<a href="#" name="phone_other_2" class="button сancel" @click=${updateUserDataCancel}>Отменить</a>
+													` : $h` `}
+												</label>
+											</div>
+											` : $h` `}
+											${profile.phone_other_3 ? $h`
+											<div>
+												<div class="name">Дополнительный номер телефона</div>
+												<label data-err="${userDataError.phone_other_3}">
+													<input class="input" name="phone_other_3" type="text" placeholder="Номер телефона" value="${profile.phone_other_3}" @input=${updateUserData}/>
+													${update.phone_other_3 ? $h`
+														<a href="#" class="button button-fill save" @click=${saveDataProfile}>Сохранить</a>
+														<a href="#" name="phone_other_3" class="button сancel" @click=${updateUserDataCancel}>Отменить</a>
+													` : $h` `}
+												</label>
+											</div>
+											` : $h` `}
+										</form>
+									</div>
+									<div id="addr" class="page-content tab">
+										<div class="block">
+											<form class="dataForm" id="userAddress" name="userAddress">
+												<div class="headForm">Адрес</div>
+												<div>
+													<div class="name">Город</div>
+													<label data-err="${userAddressError.city}">
+														<input class="input" name="city" type="text" placeholder="Город" value="${address.city}" @input=${updateUserAddress}/>
+															${updateAddress.city ? $h`
+																<a href="#" class="button button-fill save" @click=${savedataaddress}>Сохранить</a>
+																<a href="#" name="city" class="button сancel" @click=${updateAddressCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Улица и дом*</div>
+													<label data-err="${userAddressError.street}">
+														<input class="input" name="street" type="text" placeholder="Улица и номер дома" value="${address.street}" @input=${updateUserAddress}/>
+															${updateAddress.street ? $h`
+																<a href="#" class="button button-fill save" @click=${savedataaddress}>Сохранить</a>
+																<a href="#" name="street" class="button сancel" @click=${updateAddressCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Подъезд*</div>
+													<label data-err="${userAddressError.entrance}">
+														<input class="input" name="entrance" type="number" placeholder="Номер подъезда" value="${address.entrance}" @input=${updateUserAddress}/>
+															${updateAddress.entrance ? $h`
+																<a href="#" class="button button-fill save" @click=${savedataaddress}>Сохранить</a>
+																<a href="#" name="entrance" class="button сancel" @click=${updateAddressCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Квартира*</div>
+													<label data-err="${userAddressError.apartment}">
+														<input class="input" name="apartment" type="number" placeholder="Номер квартиры" value="${address.apartment}" @input=${updateUserAddress}/>
+															${updateAddress.apartment ? $h`
+																<a href="#" class="button button-fill save" @click=${savedataaddress}>Сохранить</a>
+																<a href="#" name="apartment" class="button сancel" @click=${updateAddressCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Этаж*</div>
+													<label data-err="${userAddressError.floor}">
+														<input class="input" name="floor" type="number" placeholder="Этаж" value="${address.floor}" @input=${updateUserAddress}/>
+															${updateAddress.floor ? $h`
+																<a href="#" class="button button-fill save" @click=${savedataaddress}>Сохранить</a>
+																<a href="#" name="floor" class="button сancel" @click=${updateAddressCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Комментарий</div>
+													<label data-err="${userAddressError.comm}">
+														<textarea name="comm" @input=${updateUserAddress}>${address.comm}</textarea>
+														${updateAddress.comm ? $h`
+															<a href="#" class="button button-fill save" @click=${savedataaddress}>Сохранить</a>
+															<a href="#" name="comm" class="button сancel" @click=${updateAddressCancel}>Отменить</a>
+														` : $h` `}															
+													</label>
+												</div>
+
+											</form>
+										</div>
+									</div>
+									<div id="petsinfo" class="page-content tab">
+										<div class="block">
+											<form class="dataForm" id="userPets" name="userPets">
+												<div class="headForm">Информация о питомце</div>
+												<div>
+													<div class="name">Кличка питомца</div>
+													<label data-err="${userPetsError.name}">
+														<input class="input" name="name" type="text" placeholder="Кличка питомца" value="${pets.name}" @input=${updateUserPets}/>
+															${updatePets.name ? $h`
+																<a href="#" class="button button-fill save" @click=${savedatapets}>Сохранить</a>
+																<a href="#" name="name" class="button сancel" @click=${updatePetsCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div class="zoneEntrance">
+													<div class="name">Возраст</div>
+													<label data-err="${userPetsError.age}">
+														<input class="input" name="ageText" type="text" placeholder="Возраст питомца" value="${pets.ageText}" @input=${updateUserPets} disabled/>
+														<div class="range-slider range-slider-init color-black petsAge" data-label="true">
+															<input class="" type="range" name="age" min="0" max="20" step="1" value="${pets.age}" @input=${onAge}/>
+														</div>
+															${updatePets.age ? $h`
+																<a href="#" class="button button-fill save" @click=${savedatapets}>Сохранить</a>
+																<a href="#" name="age" class="button сancel" @click=${updatePetsCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Пол</div>
+
+													<label class="item-checkbox item-content" @click=${selectMale}>
+														<input type="checkbox" name="male" value="1" checked/>
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Мужской</div>
+														</div>
+													</label>
+													
+													<label class="item-checkbox item-content" @click=${selectFemale}>
+														<input type="checkbox" name="female" value="1" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Женский</div>
+														</div>
+													</label>
+												</div>
+												<div>
+													<div class="name">Порода</div>
+													<label data-err="${userPetsError.breed}">
+														<input class="input" name="breed" type="text" placeholder="Порода" value="${pets.breed}" @input=${updateUserPets}/>
+															${updatePets.breed ? $h`
+																<a href="#" class="button button-fill save" @click=${savedatapets}>Сохранить</a>
+																<a href="#" name="breed" class="button сancel" @click=${updatePetsCancel}>Отменить</a>
+															` : $h` `}
+													</label>
+												</div>
+												<div>
+													<div class="name">Комментарий</div>
+													<label data-err="${userPetsError.comm}">
+														<textarea name="comm" @input=${updateUserPets}>${pets.comm}</textarea>
+														${updatePets.comm ? $h`
+															<a href="#" class="button button-fill save" @click=${savedatapets}>Сохранить</a>
+															<a href="#" name="comm" class="button сancel" @click=${updatePetsCancel}>Отменить</a>
+														` : $h` `}															
+													</label>
+												</div>
+												${pets.commmore ? $h`
+												<div>
+													<div class="name">Дополнительный комментарий</div>
+													<label data-err="${userPetsError.commmore}">
+														<textarea name="commmore" @input=${updateUserPets}>${pets.commmore}</textarea>
+														${updatePets.commmore ? $h`
+															<a href="#" class="button button-fill save" @click=${savedatapets}>Сохранить</a>
+															<a href="#" name="commmore" class="button сancel" @click=${updatePetsCancel}>Отменить</a>
+														` : $h` `}															
+													</label>
+												</div>
+												` : $h`
+													<div>
+														<div class="addMorePhone" data-phone="1" @click=${addPetsComm}>
+															<div>Добавить полное описание питомца</div>
+															<img src="assets/icon_plus.svg" />
+														</div>
+													</div>
+												`}
+												
+
+											</form>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>		
+
+				</div>
+			</div>
+
+        </div>
+
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let profile = [];
+	
+	let userEditpassError = {};
+	let userDataError = [];
+	let update = [];
+	
+	let address = [];
+	let userAddressError = [];
+	let updateAddress = [];
+	
+	let pets = [];
+	let userPetsError = [];
+	let updatePets = [];
+	
+	const onAge = (e) => {
+		$store.dispatch('getNoun',{
+			number: e.target.value,
+			one: 'год',
+			two: 'года', 
+			five: 'лет'
+		}).then(function(text) {
+			if(text){
+				pets.ageText = e.target.value+' '+text;
+				updatePets['age'] = 1;
+				$update();		
+			}
+		});
+
+    };
+	function selectMale(){
+		document.querySelectorAll('#userPets input[name="female"]')[0].checked = false;
+		document.querySelectorAll('#userPets input[name="male"]')[0].checked = true;
+
+	};
+	function selectFemale(){
+		document.querySelectorAll('#userPets input[name="male"]')[0].checked = false;
+		document.querySelectorAll('#userPets input[name="female"]')[0].checked = true;
+
+	};
+	// Базовые данные пользователя
+	function updateUserData(e){
+		update[e.target.name] = 1;
+		$update();
+	};
+	function updateUserDataCancel(e){
+		const name = new String(e.target.name);
+		const stname = new String($store.state.profile[name]);
+		update[name] = 0;
+		const data = {};
+		if(stname != 'undefined'){
+			data[name] = stname;
+		} else {
+			data[name] = '';
+		}
+		
+		$f7.form.fillFromData('#userData', data);		
+		profile[name] = $store.state.profile[name];		
+		$update();
+	};
+	function addMorePhone(e){
+		const phone = new String(e.target.getAttribute('data-phone'));
+		profile['phone_other_'+phone] = "+7";		
+		$update();
+	};
+
+	function addPetsComm(e){
+		pets['commmore'] = "Введите информацию...";		
+		$update();
+	};
+	
+	// Адресс
+	function updateUserAddress(e){
+		updateAddress[e.target.name] = 1;
+		$update();
+	}
+	function updateAddressCancel(e){
+		const name = new String(e.target.name);
+		const stname = new String($store.state.address[name]);
+		updateAddress[name] = 0;
+		const data = {};
+		if(stname != 'undefined'){
+			data[name] = stname;
+		} else {
+			data[name] = '';
+		}
+		
+		$f7.form.fillFromData('#userAddress', data);		
+		address[name] = $store.state.address[name];		
+		$update();
+	}
+
+	// Информация о животных
+	function updateUserPets(e){
+		updatePets[e.target.name] = 1;
+		$update();
+	}
+	function updatePetsCancel(e){
+		const name = new String(e.target.name);
+		const stname = new String($store.state.address[name]);
+		updateAddress[name] = 0;
+		const data = {};
+		if(stname != 'undefined'){
+			data[name] = stname;
+		} else {
+			data[name] = '';
+		}
+		
+		$f7.form.fillFromData('#userAddress', data);		
+		address[name] = $store.state.address[name];		
+		$update();
+	}
+	
+	
+	function saveDataProfile(){
+		app.preloader.show();
+		var formData = $f7.form.convertToData('#userData');
+		app.request.postJSON(apiServer+'user/savedata', formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: res.data.error
+					});
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: 'Информация сохранена'
+					});
+					$store.dispatch('checkToken').then(function(checkToken) {
+						if(checkToken == true){
+							profile = $store.state.profile;
+							if($store.state.address){
+								address = $store.state.address;
+							}
+							if($store.state.pets){
+								pets = $store.state.pets;
+							}
+							$update();				
+						}
+					});
+				}
+								
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}
+							
+		});
+	}
+	
+	function savedataaddress(){
+		app.preloader.show();
+		var formData = $f7.form.convertToData('#userAddress');
+		app.request.postJSON(apiServer+'user/savedataaddress', formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: res.data.error
+					});
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: 'Информация сохранена'
+					});
+					$store.dispatch('checkToken').then(function(checkToken) {
+						if(checkToken == true){
+							profile = $store.state.profile;
+							if($store.state.address){
+								address = $store.state.address;
+							}
+							if($store.state.pets){
+								pets = $store.state.pets;
+							}
+							updatePets = [];
+							$update();					
+						}
+					});
+				}
+								
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}
+							
+		});
+	}
+	function savedatapets(){
+		app.preloader.show();
+		var formData = $f7.form.convertToData('#userPets');
+		app.request.postJSON(apiServer+'user/savedatapets', formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: res.data.error
+					});
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: 'Информация сохранена'
+					});
+					$store.dispatch('checkToken').then(function(checkToken) {
+						if(checkToken == true){
+							profile = $store.state.profile;
+							if($store.state.address){
+								address = $store.state.address;
+							}
+							if($store.state.pets){
+								pets = $store.state.pets;
+							}
+							updatePets = [];
+							$update();					
+						}
+					});
+				}
+								
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}
+							
+		});
+	}
+
+	function formatPhoneNumber(phoneNumberString) {
+		var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+		var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/)
+		if (match) {
+			var intlCode = (match[1] ? '+7 ' : '')
+			return [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('')
+		}
+		return null
+	}
+	function userEditpass(){
+		valid = true;
+		formData = $f7.form.convertToData('#userEditpass');
+
+		if(formData.сurrent.length <= 7 ){
+			valid = false;
+			$store.dispatch('msgalert', {err: 'Minimum password length 8 characters'});
+			userEditpassError['сurrent'] = 'Minimum password length 8 characters';
+		} else {
+			userEditpassError['сurrent'] = '';
+		}
+		if(formData.newppass.length <= 7 ){
+			valid = false;
+			$store.dispatch('msgalert', {err: 'Minimum password length 8 characters'});
+			userEditpassError['newppass'] = 'Minimum password length 8 characters';
+		} else {
+			userEditpassError['newppass'] = '';
+		}
+
+		if(formData.newppass != formData.newppassduble){
+			valid = false;
+			$store.dispatch('msgalert', {err: 'Check the entered password.'});
+			userEditpassError['newppassduble'] = 'Check the entered password.';
+		};
+		if(valid == true){
+		
+			app.request.postJSON(apiServer+'user/editpass', formData).then(function (res) {
+				if(res.data){
+					if(res.data.err){
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: res.data.err});
+					} else {
+						$store.dispatch('msgalert', {err: 'Password changed successfully'});
+						app.preloader.hide();
+									
+					}
+								
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: 'Try later'});
+				}							
+			});
+		} else {
+			$update();
+			app.preloader.hide();
+		}
+	}
+
+
+	$on("pageInit", function (e, page) {
+		app.preloader.show();
+		$store.dispatch('checkToken').then(function(checkToken) {
+			if(checkToken == true){
+				profile = $store.state.profile;
+				address = $store.state.address;
+				pets = $store.state.pets;
+				if(pets.age){
+					$store.dispatch('getNoun',{
+						number: pets.age,
+						one: 'год',
+						two: 'года',
+						five: 'лет'
+					}).then(function(text) {
+						if(text){
+							pets.ageText = pets.age+' '+text;
+							app.range.setValue('#userPets .petsAge', pets.age)
+							$update();		
+						}
+					});
+				}
+				
+				$update();
+				app.preloader.hide();				
+			}
+		});
+		/*
+		app.request.postJSON(apiServer+'user/profile').then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					//$store.dispatch('msgalert', {err: res.data.error});
+					//app.views.main.router.navigate('/login');
+					window.location.href = baseUrl+'login';
+				} else {
+					$update();
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+		*/
+	});
+    return $render;
+}
+</script>

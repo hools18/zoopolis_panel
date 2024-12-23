@@ -1,0 +1,183 @@
+<template>
+    <div class="page page-pd page-authors graybg">
+        <div class="page-content">
+
+			<div class="graybg">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-25"></div>
+						<div class="col-100 small-100 medium-100 large-100 xlarge-75">
+							<h1>Partnering<br/>with the best authors</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="whitebg">
+			<div class="container">
+
+				<div class="tabs-authors tabs-animated-wrap">
+					<div class="tabs">
+						${authors.map((author, index) => $h`
+						<div id="author_${index}" class="author page-content tab  ${index === 0 && $h` tab-active`}">
+							<div class="flex">
+								<div>
+									<div class="photo" style="background-image: url(authorsphoto/1200/${author.photo}.webp);"></div>
+								</div>
+								<div class="data">
+									<div class="name">${author.name}</div>
+									<div class="deck" innerHTML=${author.biography}></div>
+									${author.brands ? $h`
+									<div class="brands">
+										${Object.values(author.brands).map((brand, i) => $h`
+											<a href="#" class="brand">
+												<img class="logo" src="brandslogo/200/${brand.logo}.webp"/>
+											</a>
+										`)}											
+									</div>
+									` : `
+									` }
+									
+									${author.bookcovers ? $h`
+									<div class="subtitle">Author of books</div>
+									<div class="bookcovers">
+										${Object.values(author.bookcovers).map((bookcover, indexdc) => $h`
+											<a class="showGal" href="#" @click=${()=> showBookcovers(author.id, indexdc)}><img class="noclick" src="bookcovers/200/${bookcover}.webp"/></a>
+										`)}											
+									</div>
+									` : `
+									` }
+									
+									<div class="tags">
+										${$(author.industry).map((industryItem) => $h`
+											<div class="chip chip-outline">
+												<div class="chip-label">${industryItem}</div>
+											</div>
+										`)}
+										
+										${$(author.goal).map((goalItem) => $h`
+											<div class="chip chip-outline">
+												<div class="chip-label">${goalItem}</div>
+											</div>
+										`)}
+										${$(author.socialmedia).map((socialmediaItem) => $h`
+											<div class="chip chip-outline">
+												<div class="chip-label">${socialmediaItem}</div>
+											</div>
+										`)}
+										${$(author.tonesvoice).map((tonesvoiceItem) => $h`
+											<div class="chip chip-outline">
+												<div class="chip-label">${tonesvoiceItem}</div>
+											</div>
+										`)}
+									</div>
+									<div class="ftr">
+										<div class="social">
+										${showContacts ? $h`
+											${author.linkedin ? $h`
+											<a class="link external" href="https://www.linkedin.com/in/${author.linkedin}"><img src="/assets/linkedIn.svg" /></a>
+											` : ` ` }
+											${author.email ? $h`
+											<a class="link external" href="${author.email}"><img src="/assets/email.svg" /></a>
+											` : ` ` }
+											${author.site ? $h`
+											<a class="link external" href="${author.site}"><img src="/assets/site.svg" /></a>
+											` : ` ` }
+										` : $h` `}
+										</div>
+										<div class="arrows">
+											<button class="link tab-link" href="#"  @click=${()=> showAuthor(index - 1)}><img src="/assets/arrow_l.svg" /></button>
+											<button class="link tab-link" href="#"  @click=${()=> showAuthor(index + 1)}><img src="/assets/arrow_r.svg" /></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						`)}
+					</div>
+				</div>
+
+				<div class="authors_list">
+					${authors.map((item, index) => $h`
+						
+						<a href="#author_${index}" class="tab-link ${index === 0 && $h` tab-link-active `}" style="background-image: url(authorsphoto/200/${item.photo}.webp);"></a>
+					`)}
+				</div>
+
+			</div>
+			</div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let authors = [];
+	
+	let contestGallery = [];
+	
+	let contestGalleryArray = [];
+
+	function showBookcovers(author, index){
+		console.log(index);
+		contestGallery[author].open(index);
+	}
+	function showAuthor(i){
+		if(i < 0){
+			app.tab.show("#author_"+(authors.length - 1));
+		} else {
+			if(i > (authors.length - 1)){
+				app.tab.show("#author_0");
+			} else {
+				app.tab.show("#author_"+i);
+			}
+			
+		}
+		
+	}
+	let showContacts = 0;
+	
+	
+	
+	$on("pageInit", function (e, page) {
+		if(app.form.getFormData('token')){
+			showContacts = 1;
+		} else {
+		}
+		app.preloader.hide();
+
+		
+		app.request.postJSON(apiServer+'authors').then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.err});
+				} else {
+					data = res.data;
+					authors = data;
+					
+					authors.forEach(function(author, index, array) {
+
+						contestGalleryArray = [];
+						if(authors[index]['bookcovers']){
+							authors[index]['bookcovers'].forEach(function(item, index, array) {
+								console.log("bookcovers/1200/"+item+".webp");
+								contestGalleryArray.push("bookcovers/1200/"+item+".webp");
+							});
+							contestGallery[authors[index]['id']] = $f7.photoBrowser.create({
+								photos: contestGalleryArray,
+								theme: 'dark'
+							});
+						}
+					});
+					$update();
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	});
+    return $render;
+}
+</script>

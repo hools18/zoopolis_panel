@@ -1,0 +1,493 @@
+<template>
+    <div class="page page-pd graybg">
+        <div class="page-content">
+			<div class="graybg">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-25"></div>
+						<div class="col-100 small-100 medium-100 large-100 xlarge-75">
+							<div class="biggesthead">UIKIT</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="whitebg">
+				<div class="container">
+					<div class="page-content">
+						<div class="block-title">Headline</div>
+						<div class="block block-strong">
+							<div class="row">
+								<div class="h1">Headline H1 102/90</div>
+							</div>
+							<div class="row">
+								<div class="h2">Headline H2 86/100</div>
+							</div>
+							<div class="row">
+								<div class="h3">Headline H3 68/100</div>
+							</div>
+							<div class="row">
+								<div class="h4">Headline H4 42/110</div>
+							</div>
+							<div class="row">
+								<div class="h5">Headline H5 36/110</div>
+							</div>
+						</div>
+						<div class="block-title">Subtitle (Используется в подзаголовках)</div>
+						<div class="block block-strong">
+							<div class="row">
+								<div class="subtitle">subtitle 20 medium CAPS 20/126</div>
+							</div>
+						</div>
+						<div class="block-title">Article</div>
+						<div class="block-title">Article text (Используется для набора текста)</div>
+						<div class="block block-strong">
+							<div class="row">
+								<div class="contents">
+									<div class="material">
+										<div class="content">
+											for text 18 regular 18/150
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-title">Article input for text  (Используется для текста внутри инпутов, которые используются в тексте)</div>
+						<div class="block block-strong">
+							<div class="row">
+								<div class="contents">
+									<div class="material">
+										<div class="content">
+											<div>
+												<editzone data-icon="send" class=""><div class="fr" data-original="input for text 16 regular 16/150" contenteditable="true">input for text 16 regular 16/150</div></editzone>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="block-title">Buttons</div>
+						
+						<div class="block-title">Base (base size)</div>
+						<div class="block block-strong">
+							<div class="row">
+								<button class="col button button-fill onlyicon"><img src="/assets/search.svg"/></button>
+								<button class="col button button-fill">apply</button>
+								<button class="col button button-fill color-gray">edit profile</button>
+								<button class="col button">delete profile</button>
+								<button class="col button button-outline icon"><img src="/assets/google.svg"/> delete profile</button>
+							</div>
+						</div>
+						<div class="block-title">Disabled</div>
+						<div class="block block-strong">
+							<div class="row">
+								<button class="col button button-fill onlyicon" disabled><img src="/assets/search.svg"/></button>
+								<button class="col button button-fill" disabled>apply</button>
+								<button class="col button button-fill color-gray" disabled>edit profile</button>
+								<button class="col button" disabled>delete profile</button>
+								<button class="col button button-outline icon" disabled><img src="/assets/google.svg"/> delete profile</button>
+							</div>
+						</div>
+
+						<div class="block-title">Base (medium size)</div>
+						<div class="block block-strong">
+							<div class="row">
+								<button class="col button button-fill button-medium onlyicon"><img src="/assets/search.svg"/></button>
+								<button class="col button button-fill button-medium">apply</button>
+								<button class="col button button-fill button-medium color-gray">edit profile</button>
+								<button class="col button button-medium">delete profile</button>
+								<button class="col button button-outline button-medium icon"><img src="/assets/google.svg"/> delete profile</button>
+							</div>
+						</div>
+						<div class="block-title">Disabled</div>
+						<div class="block block-strong">
+							<div class="row">
+								<button class="col button button-fill button-medium onlyicon" disabled><img src="/assets/search.svg"/></button>
+								<button class="col button button-fill button-medium" disabled>apply</button>
+								<button class="col button button-fill button-medium color-gray" disabled>edit profile</button>
+								<button class="col button button-medium" disabled>delete profile</button>
+								<button class="col button button-outline button-medium icon" disabled><img src="/assets/google.svg"/> delete profile</button>
+							</div>
+						</div>
+						
+						<div class="block-title">Inputs</div>
+						<div class="block-title">Default</div>
+						<div class="row uikit_inputs">
+							<div class="col-50">
+								<input type="email" placeholder="Your email"/>
+							</div>
+							<div class="col-50 bg_gray">
+								<input class="white" type="email" placeholder="Your email"/>
+							</div>
+						</div>
+						<div class="row uikit_inputs">
+							<div class="col-50">
+								<label data-err="Error your email">
+									<input type="email" placeholder="Your email"/>
+								</label>
+							</div>
+							<div class="col-50 bg_gray">
+								<label data-err="Error your email">
+									<input class="white" type="email" placeholder="Your email"/>
+								</label>
+							</div>
+						</div>
+						<div class="block-title">Controls</div>
+						<div class="row">
+							<div class="col-50">
+								<div class="toggleflex">
+									<div class="nametoggle">No checked</div>
+									<label class="toggle toggle-init color-blue">
+										<input type="checkbox" />
+										<span class="toggle-icon"></span>
+									</label>
+								</div>
+											
+								<div class="toggleflex">
+									<div class="nametoggle">Dissabled // no checked</div>
+									<label class="toggle toggle-init color-blue">
+										<input type="checkbox" disabled/>
+										<span class="toggle-icon"></span>
+									</label>
+								</div>											
+
+							</div>
+							<div class="col-50">
+								<div class="toggleflex">
+									<div class="nametoggle">checked</div>
+									<label class="toggle toggle-init color-blue">
+										<input type="checkbox" checked />
+										<span class="toggle-icon"></span>
+									</label>
+								</div>
+								<div class="toggleflex">
+									<div class="nametoggle">Dissabled // checked</div>
+									<label class="toggle toggle-init color-blue">
+										<input type="checkbox" checked disabled/>
+										<span class="toggle-icon"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="block-title">Chips</div>
+						<div class="block block-strong">
+							<div class="row">
+								<div class="chip chip-outline">
+									<div class="chip-label">Fintech & delete</div>
+									<a href="#" class="remove"></a>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Other & delete</div>
+									<a href="#" class="remove"></a>
+								</div>
+								<a href="#" class="chip chip-outline selected">
+									<div class="chip-label">Selected others</div>
+								</a>
+								<div class="chip chip-outline">
+									<div class="chip-label">Fintech</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Other</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">5+</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">7</div>
+								</div>
+							</div>
+						</div>
+							
+						
+						<div class="block-title">Search filter</div>
+						<!-- filter start -->
+						<div class="filter">
+							<div class="search">
+								<div class="flex">
+									<div>
+										<div class="fab">
+											<a href="#">Industry <img src="/assets/fabarrow.svg"/></a>
+											<div class="fab-buttons fab-buttons-bottom">
+												<div class="filtername">industry search</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Tourism" value="Tourism" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Tourism</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-beverage" value="beverage"/>
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Food and beverage</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Fashion" value="Fashion" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Fashion, manufacturing</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Hotel" value="Hotel" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Hotel and resorts</div>
+														</div>
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="line"></div>
+									<div>
+										<div class="fab">
+											<a href="#">Goal <img src="/assets/fabarrow.svg"/></a>
+											<div class="fab-buttons fab-buttons-bottom">
+												<div class="filtername">Goal</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Tourism" value="Tourism" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Tourism</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-beverage" value="beverage"/>
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Food and beverage</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Fashion" value="Fashion" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Fashion, manufacturing</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Hotel" value="Hotel" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Hotel and resorts</div>
+														</div>
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="line"></div>
+									<div>
+										<div class="fab">
+											<a href="#">For social media <img src="/assets/fabarrow.svg"/></a>
+											<div class="fab-buttons fab-buttons-bottom">
+												<div class="filtername">For social media</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Tourism" value="Tourism" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Tourism</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-beverage" value="beverage"/>
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Food and beverage</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Fashion" value="Fashion" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Fashion, manufacturing</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Hotel" value="Hotel" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Hotel and resorts</div>
+														</div>
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="line"></div>
+									<div>
+										<div class="fab">
+											<a href="#">Tone of voice <img src="/assets/fabarrow.svg"/></a>
+											<div class="fab-buttons fab-buttons-bottom">
+												<div class="filtername">Tone of voice</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Tourism" value="Tourism" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Tourism</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-beverage" value="beverage"/>
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Food and beverage</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Fashion" value="Fashion" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Fashion, manufacturing</div>
+														</div>
+													</label>
+												</div>
+												<div class="option">
+													<label class="item-checkbox item-content">
+														<input type="checkbox" name="demo-Hotel" value="Hotel" checked="checked" />
+														<i class="icon icon-checkbox"></i>
+														<div class="item-inner">
+															<div class="item-title">Hotel and resorts</div>
+														</div>
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div>
+										<button class="col button button-fill onlyicon"><img src="/assets/search.svg"/></button>
+									</div>
+								
+								</div>
+							</div>
+							
+							
+							<div class="othertags">
+								<div class="chip chip-outline">
+									<div class="chip-label">Fintech</div>
+									<a href="#" class="remove"></a>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Fintech</div>
+									<a href="#" class="remove"></a>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">hotel</div>
+									<a href="#" class="remove"></a>
+								</div>
+							</div>
+							
+							
+							<div class="othertags">
+								<div class="chip chip-outline">
+									<div class="chip-label">Tourism</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Food and beverage, restaurants</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">hotel</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Fashion, manufacturing</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Financial services</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Fintech</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Pention funds</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Pention funds</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Fintech</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Insurance companies</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">Fashion, manufacturing</div>
+								</div>
+								<div class="chip chip-outline">
+									<div class="chip-label">+10</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Filter END-->
+						
+						<div class="block-title">Pagination (select Page: ${$store.state.pagination})</div>
+						<div class="block block-strong">
+							<div name="p_uikit" id="pagination" @click=${selectPage}></div>
+						</div>
+					</div>
+				</div>
+			</div>			
+        </div>
+    </div>
+</template>
+<script>
+export default (props, { $, $f7, $on, $store, $update}) => {
+	function selectPage(){
+		/*
+		alert(page.srcElement.dataset.page);
+		console.log(page.srcElement.dataset.page);
+		*/
+		$update();
+	}
+
+	$on('pageInit', () => {
+		app.store.state.pagination = 1;
+		$('.remove').on('click', function (e) {
+			e.preventDefault();
+			var chip = $(this).parents('.chip');
+			chip.remove();
+		});
+
+
+		Pagination.Init(document.getElementsByName("p_uikit")[0], {
+			size: 30, // pages size
+			page: 1
+		});
+
+
+		
+	})
+
+	return $render;
+}
+</script>

@@ -1,0 +1,113 @@
+<template>
+    <div class="page clients">
+		<div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-60 xlarge-60">
+							<h1 class="headTitle">Ветеринарные клиники</h1>
+						</div>
+						<div class="col-100 small-100 medium-100 large-40 xlarge-40">
+							<div class="button_gpoup heading">
+								<button class="button col button-fill button-round" @click=${()=> createNew()}>Добавить клинику <i class="right addnew"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">
+	
+					<div class="card data-table">
+						<form class="filter" id="filterClients" name="filterClients">
+							<table>
+								<thead>
+									<tr>
+										<th class="label-cell">UID</th>
+										<th class="label-cell">Название</th>
+										<th class="numeric-cell">Адресс</th>
+										<th class="numeric-cell">Телефон</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									${clinicList.map((data, index) => $h`
+									<tr @click=${()=> showClient(data.id)}>
+										<td class="label-cell">${data.id}</td>
+										<td class="label-cell">${data.name}</td>
+										<td class="numeric-cell">${data.addr}</td>
+										<td class="numeric-cell">${data.phone}</td>
+									</tr>
+									`)}
+								</tbody>
+							</table>
+						</form>
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</div>
+		
+
+    </div>
+
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+
+	let clinicList = [];
+	let pagination = [];
+	function showClient(id){
+		$f7.views[1].router.navigate('/veterinaryclinic/'+id+'/');
+	}
+	function getXLMS(){
+		$store.dispatch('msgalert', {err: 'ERROR XLMS'});
+	}
+	
+	function createNew(){
+		$f7.dialog.prompt('Введите название клиники', function (name) {
+			$f7.dialog.confirm('Название клиники ' + name + ' введено верно?', function () {
+				fetch(apiServer+'newvetclinic', {
+					method: 'POST', 
+					body: JSON.stringify({
+						name: name
+					}),
+					headers: headers()
+				})
+				.then((res) => res.json())
+				.then(function (data) {
+					if(data.err){
+						$store.dispatch('msgalert', {err: data.err});
+					} else {
+						$store.dispatch('msgalert', {err: 'Клиника добавлена.'});
+						$f7.views[1].router.navigate('/veterinaryclinic/'+data.id+'/');
+					}
+				});
+
+			});
+		});
+	}
+	function getClinicList(){	
+		$f7.preloader.show();
+		fetch(apiServer+'vetclinics', {
+			method: 'POST', 
+			body: JSON.stringify(),
+			headers: headers()
+		})
+		.then((res) => res.json())
+		.then(function (data) {
+			clinicList = data.features;
+			$update();
+		});
+		
+		$f7.preloader.hide();
+	}
+	$on("pageInit", function (e, page) {
+		getClinicList();
+	});
+    return $render;
+}
+</script>

@@ -1,0 +1,186 @@
+<template>
+    <div class="page service">
+		<div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+							<h1 class="headTitle">Настройка подписки</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">				
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+							<div class="tabs">
+								<div id="concierge" class="page-content tab-active">
+									<div class="wrap">
+										<div class="serviceslist">
+											<div class="row">
+												<div class="item">
+													<div class="row">
+														<a href="/services/zooid/" class="col-100 data">
+															<div>
+																<div class="name">ЗооID</div>
+															</div>
+															<div>
+																<div class="action">
+																</div>
+															</div>
+														</a>
+													</div>
+												</div>
+												<div class="item">
+													<div class="row">
+														<a href="/services/concierge/" class="col-100 data">
+															<div>
+																<div class="name">Зооконсьерж</div>
+															</div>
+															<div>
+																<div class="action">
+																</div>
+															</div>
+														</a>
+													</div>
+												</div>
+												<div class="item">
+													<div class="row">
+														<a href="/services/zoopolis/" class="col-100 data">
+															<div>
+																<div class="name">Зоополис</div>
+															</div>
+															<div>
+																<div class="action">
+																</div>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+						
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="sheet-modal modal-promoinfo">
+			<div class="hat"><a class="link sheet-close" href="#"></a></div>
+			<div class="sheet-modal-inner">
+				
+				<div class="info">
+					<div class="title">${promo.title}</div>
+					<div class="shortdesc">
+						<div class="sale">${promo.percent}%</div> ${promo.shortdesc}
+					</div>
+					<div class="time">До ${promo.stoptextdata} (${promo.stoptext})</div>
+				</div>
+				<div class="gotocode">
+					<div class="promocode link" code="${promo.promocode}"  @click=${promocode}>
+						<div class="label">Промокод</div>
+						<div class="pers">${promo.percent}%</div>
+						<img class="copy" src="assets/icon_copy.svg"/>
+					</div>
+					<div class="promolink"><a href="${promo.promolink}" target="_blank" class="col button button-fill external link">К покупкам</a></div>
+				</div>
+				<div class="сonditions">
+					<div>
+						<div class="title">Условия</div>
+						<div class="desc" innerHTML=${promo.сonditions}></div>
+					</div>
+					<div>
+						<div class="other">Срок действия</div>
+						<div class="desc">${promo.starttextdata} - ${promo.stoptextdata} (${promo.stoptext})</div>
+					</div>
+					<div>
+						<div class="other">Минимальная сумма покупки</div>
+						<div class="desc upp">${promo.minprice} ${promo.currency}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let subscriptionName = 'Зоо ID';
+	let promolist = [];
+	
+	let promo = [];
+	function showPromo(e){
+		app.preloader.show();
+		getid = e.target.getAttribute('data-id');
+		app.request.postJSON(apiServer+'promo', {id: getid}).then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.err});
+				} else {
+					app.preloader.hide();
+					data = res.data;
+					
+
+					data.stoptext = moment(data.stop, "YYYYMMDD").fromNow();
+					data.stoptextdata = moment(data.stop, "YYYYMMDD").format('D MMMM');
+					
+					data.starttext = moment(data.start, "YYYYMMDD").fromNow();
+					data.starttextdata = moment(data.start, "YYYYMMDD").format('D MMMM');
+					promo = data;
+					$update();	
+					app.sheet.open('.modal-promoinfo');					
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	};
+	function startLoadPromo(){
+		app.preloader.show();
+		var formData = $f7.form.convertToData('#filterPromo');
+		app.request.postJSON(apiServer+'promo', formData).then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.err});
+				} else {
+					data = res.data;					
+					promolist = data;
+					$update();
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	}
+	function promocode(e){
+		getcode = e.target.getAttribute('code');
+		navigator.clipboard.writeText(getcode)
+		.then(
+			() => $store.dispatch('msgalert', {err: 'Промокод успешно скопирован.'})
+		).catch(
+			err => $store.dispatch('msgalert', {err: 'Функция копирования недоступна в вашем браузере.'})
+		);
+	}
+	$on("pageInit", function (e, page) {
+		startLoadPromo();
+		
+		$('#filterPromo [name="filter"]').on('change', function(e) {
+			startLoadPromo();
+		});
+	});
+    return $render;
+}
+</script>

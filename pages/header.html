@@ -1,0 +1,163 @@
+<template>
+    <div class="page page-header">
+        <div class="page-content">
+			<div class="container">
+				<div class="nav">
+					<div class="desktop">
+						<div class="navigate">
+							${profile.level == 9 ? $h`
+							<a href="/clients">Пользователи</a>
+							<a href="/promo">Промокоды и бонусы</a>
+							<a href="/veterinaryclinics">Вет. клиники</a>
+							` : $h``}
+							<a href="/services">Подписки</a>
+							<a href="/missinganimal">Пропажа животных</a>
+						</div>
+					</div>
+					<div class="desktop">
+						<div class="menu-item menu-item-dropdown">
+							<div class="menu-item-content"><img src="assets/icon_user.svg"/>
+							${profile ? $h`
+								${profile.phone}
+							` : $h`	
+								Вход
+							`}
+							</div>
+							<div class="menu-dropdown menu-dropdown-right">
+								<div class="menu-dropdown-content">
+									<a href="/logout" class="menu-dropdown-link menu-close">Выйти</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mobile">
+						<div class="mobNavigate">
+							<a href="#" class="button button-outline icon">Помощь <img src="assets/icon_help.svg" /></a>
+							<a href="#" class="button button-outline sheet-open" data-sheet=".modal-navigate"><img src="assets/icon_burger.svg" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+			<div class="sheet-modal modal-navigate">
+				<div class="hat"><a class="link sheet-close" href="#"></a></div>
+				<div class="sheet-modal-inner">
+					<div class="modal-title">Навигация</div>
+					<div class="nav">
+						
+						<div class="mobile">
+							<div class="user">
+								
+								${profile ? $h`
+									<a href="/account" class="sheet-close">
+										<img src="assets/icon_user.svg"/>
+										${profile.phone}
+									</a>
+								` : $h`	
+									
+									<a href="/login"  class="sheet-close"><img src="assets/icon_user.svg"/> Вход</a>
+								`}
+							</div>
+						</div>
+						<div class="mobile">
+							<div class="navigate">
+								${profile ? $h`
+									<a href="/logout"  class="sheet-close">Выйти</a>
+								` : $h`
+									<a href="/signup"  class="sheet-close">Регистрация</a>
+								`}
+								
+								
+							</div>
+						</div>
+						<div class="mobile">
+							<div class="navigate">
+								<a href="/subscription" class="sheet-close">Подписка</a>
+								<a href="/promo" class="sheet-close">Промокоды и бонусы</a>
+								<a href="/services" class="sheet-close">Услуги</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </div>
+
+</template> 
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store }) => {	
+	let profile = $store.state.profile;
+
+	let check = 0;
+
+	$on("pageBeforeIn", function (e, page) {
+		
+	});
+	$on("pageInit", function (e, page) {
+		$store.dispatch('checkToken').then(function(checkToken) {
+			if(checkToken){
+				profile = $store.state.profile;
+				$update();				
+			} else {
+				$f7.views[1].router.navigate('/login');
+			}
+		});
+		
+	/*
+		if(app.form.getFormData('copied')){
+			$store.state.copied = app.form.getFormData('copied');
+		} else {
+			$store.state.copied = 0;
+			app.form.storeFormData('copied', $store.state.copied);
+		}
+		if(app.form.getFormData('articlesCopyHistory')){
+			$store.state.articlesCopyHistory = app.form.getFormData('articlesCopyHistory');
+		} else {
+			$store.state.articlesCopyHistory = [];
+			app.form.storeFormData('articlesCopyHistory', $store.state.articlesCopyHistory);
+		}
+		app.request.postJSON(apiServer+'user/token').then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.request.setup({
+						headers: {
+							'Authorization': false
+						}
+					});
+					
+					genguest = md5(window.clientInformation.appVersion+''+app.utils.id('xxxx-xxxx-xxxx-xxxx'));
+					if(app.form.getFormData('guest')){
+						$store.state.guest = app.form.getFormData('guest');
+					} else {
+						app.form.removeFormData('token');
+						app.form.removeFormData('userid');
+						app.form.removeFormData('copied');
+						app.form.removeFormData('articlesCopyHistory');
+					
+						app.form.storeFormData('guest', genguest);
+						$store.state.guest = genguest;
+					}
+					
+					
+				} else {
+					profile = res.data.getUser;
+					if(profile.subscription){
+						$store.state.maximum = profile.subscription.limit;
+						$store.state.days = profile.subscription.days;
+						$store.state.subscription = profile.subscription.status;
+					} else {
+						$store.state.maximum = 3;
+						$store.state.subscription = false;
+					}
+					
+					$update();
+				}
+			} else {
+
+			}
+		});
+	*/
+	});
+    return $render;
+}
+</script>

@@ -1,0 +1,307 @@
+<template>
+    <div class="page page-pd page-profile">
+        <div class="page-content">
+			<section id="pricing-2" class="bg-snow pb-60 inner-page-hero pricing-section division">
+				<div class="container">
+
+
+					<!-- SECTION TITLE -->	
+					<div class="row justify-content-center">	
+						<div class="col-lg-10 col-xl-8">
+							<div class="section-title title-01 mb-80">		
+								<h2 class="h2-md">${contest.name}</h2>	
+								<p class="p-xl">Заполните все поля и описание конкурса</p>
+									
+							</div>	
+						</div>
+					</div>
+				</div>
+			</section>
+			<div class="container">
+				
+				
+
+				<div class="row">
+					<div class="col-60">
+						<div class="tabs-animated-wrap">
+							<div class="tabs">
+								<div id="contest-namedate" class="page-content tab tab-active">
+									<form class="contest-form" id="namedate">
+										<input type="number" name="id" value="${contest.id}" class="hide"/>
+										<div class="col-12">
+											<p class="p-lg">Название конкурса</p>
+											<input type="text" name="name" class="form-control" value="${contest.name}" placeholder="Придумайте название конкурса"/> 
+										</div>
+										<div class="col-12">
+											<p class="p-lg">Сроки проведения конкурса</p>
+											<span>Если конкурс проходит только в 1 день, то укажите только одну дату</span>
+											<input type="text" name="daycontest" id="daycontest" class="form-control" placeholder="Выберите дату" readonly="readonly"/> 
+										</div>
+										<div class="col-12">
+											<p class="p-lg">Период приема заявок на участие</p>
+											<span>Если прием заявок осущетсвляется только в 1 день, то укажите только одну дату</span>
+											<input type="text" name="daycontestinvite" id="daycontestinvite" class="form-control" placeholder="Выберите дату" readonly="readonly"/> 
+										</div>
+										<div class="col-12">
+											<a class="button" @click=${formnamedate}>Сохранить изменения</a>
+										</div>
+									</form>
+								</div>
+								<div id="contest-desc" class="page-content tab">
+									<form class="contest-form" id="contestdesc">
+										<input type="number" name="id" value="${contest.id}" class="hide"/>
+										<div class="col-12">
+											<p class="p-lg">Краткое описание конкурса</p>
+											<span>Опишите коротко суть конкурса, не более 200 знаков.</span>
+											<div id="minidesc" class="text-editor text-editor-init" data-placeholder="Кратко расскажите про конкурс" data-buttons='[]'>
+												<div class="text-editor-content" contenteditable innerHTML=${contest.predesc}></div>
+											</div>
+										</div>
+										<div class="col-12">
+											<p class="p-lg">Полное описание конкурса</p>
+											<span>Расскажите о конкурсе</span>
+											<div id="fulldesc" class="text-editor text-editor-init" data-placeholder="Кратко расскажите про конкурс" data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+												<div class="text-editor-content" contenteditable innerHTML=${contest.desc}></div>
+											</div>
+										</div>
+										<div class="col-12">
+											<a class="button" @click=${formcontestdesc}>Сохранить изменения</a>
+										</div>
+
+									</form>
+								</div>
+								<div id="contest-logo" class="page-content tab">
+									<form class="list" id="loadLogo">
+										<input type="number" name="id" value="${contest.id}" class="hide"/>
+										<div class="row">
+											<div class="col-33">
+												<img src="images/logos/200/${contest.logo}" style="max-width: 100%;"/>
+											</div>
+											<div class="col-66">
+												<p class="p-lg">Логотип конкурса</p>
+												<span>Размер логотипа до 1500х1500 и не более 5МБ</span>
+												<input class="form-control" type="file" id="logo" name="logo" placeholder="Выберите изображение"/>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div id="contest-gallery" class="page-content tab">
+									<form class="list" id="loadGallery">
+
+										<div class="row">
+											<div class="col-100">
+												<p class="p-lg">Загрузка фото для галереи</p>
+												<span>Выберите одно или несколько изображений. Формат JPG</span>
+												<input class="form-control" type="file" id="gallery" name="gallery[]" multiple placeholder="Выберите изображение"/>
+
+											</div>
+										</div>
+									</form>
+									<div class="row">
+										${contest.gallery.map((item) => $h`
+										<div class="col-20">
+											<img src="images/gallery/200/${item}" style="width: 100%;"/>
+										</div>
+										`)}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-40">
+						<div class="card">
+							<div class="vertTabs">
+								<a href="#contest-namedate" class="tab-link tab-link-active">Название и сроки проведения</a>
+								<a href="#contest-desc" class="tab-link">Описание конкурса</a>
+								<a href="#contest-logo" class="tab-link">Логотип конкурса</a>
+								<a href="#contest-gallery" class="tab-link">Фото галерея</a>
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-content card-content-padding">Блок со справочной информацией или иной иной информацией. Как рекламировать, как администрировать и иные данные</div>
+						</div>
+					</div>
+				</div>
+				
+
+			</div>
+        </div>
+    </div>
+</template>
+<script> 
+
+export default (props, { $f7, $f7router, $on, $el, $store, $theme, $onMounted, $onBeforeUnmount, $update }) => {
+    let contest = [];
+	contest['gallery'] = [];
+	var now = new Date();
+	var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+	
+	let calendarDefault;
+	function formnamedate(){
+		var formData = $f7.form.convertToData('#namedate');
+		app.request.postJSON(apiServer+'contest/savedata', formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.error});
+				} else {
+					app.views.main.router.refreshPage();
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	}
+	function formcontestdesc(){
+		var formData = $f7.form.convertToData('#contestdesc');
+		var minidesc = app.textEditor.create({
+			el: '#minidesc'
+		});		
+		formData['predesc'] = minidesc.getValue();
+		var fulldesc = app.textEditor.create({
+			el: '#fulldesc'
+		});		
+		formData['desc'] = fulldesc.getValue();
+		app.request.postJSON(apiServer+'contest/savedata', formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.error});
+				} else {
+					
+					app.views.main.router.refreshPage();
+					app.tab.show('#contest-desc');
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	}
+	$onMounted(() => {
+		app.preloader.show();
+		app.request.postJSON(apiServer+'contest/editdata', {id: props.id}).then(function (res) {
+			if(res.data){
+				contest = res.data;
+				dayContestDate = [];
+				dayContestDate.push(new Date(contest.dayContestStart));
+				if(contest.dayContestStop){
+					dayContestDate.push(new Date(contest.dayContestStop));
+				}
+				daycontest = $f7.calendar.create({
+					inputEl: '#daycontest',
+					rangePicker: true,
+					value: dayContestDate,
+					disabled: {
+						from: new Date(1900, 0, 1),
+						to: new Date().setDate(today.getDate() -1)
+					}
+				});
+				dayContestInviteDate = [];
+				dayContestInviteDate.push(new Date(contest.dayContestInviteStart));
+				if(contest.dayContestInviteStop){
+					dayContestInviteDate.push(new Date(contest.dayContestInviteStop));
+				}
+				daycontestinvite = $f7.calendar.create({
+					inputEl: '#daycontestinvite',
+					rangePicker: true,
+					value: dayContestInviteDate,
+					disabled: {
+						from: new Date(1900, 0, 1),
+						to: new Date().setDate(today.getDate() -1)
+					}
+				});
+				
+				app.tab.show('#contest-namedate');
+				$update();
+				app.preloader.hide();
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	
+	});
+	$on("pageInit", function (e, page) {
+		app.preloader.hide();
+		
+		$('#loadLogo #logo').change(function() {
+			app.dialog.preloader('Пожалуйста, подождите...');
+			app.preloader.show();
+			var formData = $f7.form.convertToData('#loadLogo');
+			console.log(formData);
+			
+			var $input = $("#loadLogo #logo");
+			var formData = new FormData;
+			formData.append('logo', $input.prop('files')[0]);
+			formData.append('id', props.id);
+
+			app.request({
+				url: apiServer+'contest/savedata',
+				method: 'POST',
+				data: formData,
+				cache: false,
+				mimeType: 'multipart/form-data',
+				processData: true,
+				beforeSend: function ( xhr ) {					
+				},
+				complete() {
+					app.views.main.router.refreshPage();
+					app.tab.show('#contest-logo');
+					app.dialog.close();
+				}
+			});
+		});
+		
+		$('#loadGallery #gallery').change(function() {
+			
+			//app.preloader.show();
+			
+
+			var $input = $("#loadGallery #gallery");
+			
+
+			if (parseInt($input.prop('files').length) > 5){
+				$store.dispatch('msgalert', {err: 'Неболее 5 файлов за одну загруку.'});
+				return;
+			};
+			var formData = new FormData;
+			console.log($input);
+			console.log($input.prop('files'));
+			formData.append('gallery[]', $input.prop('files'));
+			formData.append('id', props.id);
+			
+			var formElement = document.querySelector("#loadGallery");
+			var formData = new FormData(formElement);
+			formData.append('id', props.id);
+			app.dialog.preloader('Пожалуйста, подождите...');
+			app.request({
+				url: apiServer+'contest/savedata',
+				method: 'POST',
+				data: formData,
+				cache: false,
+				mimeType: 'multipart/form-data',
+				processData: true,
+				beforeSend: function ( xhr ) {					
+				},
+				complete() {
+					
+					app.views.main.router.refreshPage();
+					//app.tab.show('#contest-logo');
+					app.dialog.close();
+				}
+			});
+		});
+		
+
+
+		//app.views.main.router.navigate('/admin/editpost/'+res.data+'/');
+	});
+    return $render;
+}
+</script>

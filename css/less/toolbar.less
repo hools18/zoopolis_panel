@@ -1,0 +1,136 @@
+	.toolbar{
+	    height: 55px;
+		&.tabbar{
+		    background-color: inherit;
+			height: 55px;
+			.toolbar-inner{
+			    align-items: center;
+				justify-content: flex-start;
+				gap: 40px;
+				.tab-link{
+					font-weight: 400;
+					font-size: 18px;
+					line-height: 25px;
+					text-align: center;
+					letter-spacing: -0.015em;
+					color: #161616;
+					width: auto;
+					text-transform: inherit;
+					&.tab-link-active{
+						color: #EB6130;
+						box-shadow: inset 0px -1.5px 0 0 #f80;
+					}
+				}
+				.tab-link-highlight{
+					top: 53.5px;
+					display: block;
+					height: 1.5px;
+					display: none;
+				}
+			}
+			&:after{
+				display: none;
+			}
+			&:before{
+				background-color: rgba(22, 22, 22, 0.2);
+				height: 1.5px;
+				top: inherit;
+				bottom: 0;
+			}
+		}
+	}
+	.tabs {
+		.wrap{
+			align-items: flex-start;
+			gap: 25px;
+			margin: 40px 0 0 0;
+			/* max-width: 540px; */
+			max-width: 100%;
+			display: flex;
+			flex-direction: column;
+			.headForm{
+				font-weight: 400;
+				font-size: 40px;
+				line-height: 45px;
+				letter-spacing: -0.025em;
+				color: #161616;
+			}
+
+			.item-checkbox{
+				background: #F4F4F9;
+				border-radius: 10px;
+				height: 55px;
+				display: flex;
+				align-items: center;
+				padding: 0 25px;
+				.icon-checkbox{
+				    width: 20px;
+					height: 20px;
+					border: 1px solid #161616;
+					border-radius: 20px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					background: none;
+					opacity: 0.4;
+					&:after{
+						width: 10px;
+						height: 10px;
+						line-height: inherit;
+						background-color: #000;
+						border-radius: 10px;
+						top: 0;
+						left: 0;
+						content: '';
+					}
+				}
+				+ .item-checkbox{
+					margin-top: 15px;
+				}
+				.item-inner{
+					opacity: 0.4;
+					.item-title{
+						font-size: 18px;
+						line-height: 25px;
+						letter-spacing: -0.015em;
+						color: #161616;
+					}
+				}
+				input[type=checkbox]:checked~.icon-checkbox{
+					opacity: 1;
+				}
+				input[type=checkbox]:checked~.item-inner{
+					opacity: 1;
+				}
+				
+			}
+
+			.button{
+				&.save{
+					position: absolute;
+					right: 0;
+					top: 0;
+					border-radius: 0px 10px 10px 0px;
+					font-weight: 400;
+					font-size: 18px;
+					line-height: 25px;
+					text-align: center;
+					letter-spacing: -0.015em;
+					color: #F9F9FA;
+					padding: 0 45px;
+				}
+				&.сancel{
+					position: absolute;
+					right: -111px;
+					top: 0;
+					font-size: 18px;
+					line-height: 25px;
+					letter-spacing: -0.015em;
+					color: #161616;
+					opacity: 0.4;
+
+				}
+			}
+
+		}
+	}

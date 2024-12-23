@@ -1,0 +1,156 @@
+<template>
+    <div class="page page-pd page-console graybg">
+        <div class="page-content">
+			<div class="graybg">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-25"></div>
+						<div class="col-100 small-100 medium-100 large-100 xlarge-75">
+							<div class="biggesthead">${industry.name}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="whitebg">
+				<div class="container">
+					<div class="row">
+						<div class="col-50">
+							<form class="userforms" id="dataIndustry" name="dataIndustry">
+								<div class="flexzone">
+									<div>
+										<div class="name">Article title</div>
+									</div>
+									<div class="parms">
+										<input class="input" type="text" name="name" placeholder="Industry name"/>
+									</div>
+								</div>							
+								<div class="flexzone">
+									<div>
+										<div class="name">Optional tags</div>
+									</div>
+									<div class="parms">
+										<a class="item-link smart-select smart-select-init tags" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Additional tag search">
+											<select name="tags" multiple>
+												<optgroup label="tags">
+												${tagslist.map((item) => $h`
+													<option value="${item.id}">${item.name}</option>
+												`)}
+												</optgroup>
+											</select>
+											<div class="item-content">
+												<div class="item-inner">
+													<div class="item-title">Tags list</div>
+												</div>
+											</div>
+										</a>
+									</div>
+								</div>
+
+
+								<div class="flexzone">
+									<div>
+										<div class="name"></div>
+									</div>
+									<div class="parms">
+										<a href="#" class="button button-fill button-round" @click=${saveDataIndustry}>Save data</a>
+									</div>
+								</div>
+							</form>					
+						</div>
+						<div class="col-25">
+						</div>
+						<div class="col-25">						
+							<div class="rightnav">
+								<div class="rightnav">
+								<div>
+									<a href="/console/industry" class="col button button-fill color-gray">Back to Industry</a>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+        </div>
+    </div>
+</template>
+
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let industry = {};
+	let tagslist = [];
+	let loadData = {};	
+	
+	function saveDataIndustry(){
+		app.preloader.show();
+		let formData = $f7.form.convertToData('#dataIndustry');
+		formData['id'] = props.id;
+		app.request.postJSON(apiServer+'console/industry/save', formData).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.error});
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: 'Information saved'});
+					app.views.main.router.refreshPage();
+					setTimeout(function () {
+						$f7.dialog.close();
+					}, 1000);									
+				}
+								
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}
+							
+		});
+	}
+
+	$on("pageInit", function (e, page) {
+
+		app.request.postJSON(apiServer+'console/tag/list').then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					$store.dispatch('msgalert', {err: res.data.err});
+				} else {
+					tagslist = res.data;
+				}
+			} else {
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+	});
+
+    $on('pageAfterIn', function (e, page) {
+		app.preloader.show();
+		app.request.postJSON(apiServer+'console/industry/info', {id: props.id}).then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					$store.dispatch('msgalert', {err: res.data.error});
+					window.location.href = baseUrl;
+				} else {
+					industry = res.data;					
+					console.log(industry);
+					loadData['name'] = industry.name;
+					if(industry.tags){
+						loadData['tags'] = industry.tags;
+					};
+					
+					$update();
+					setTimeout(() => {
+						console.log(loadData);
+						app.form.fillFromData('#dataIndustry', loadData);
+						app.preloader.hide();
+					}, 1000);
+				}
+			} else {
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+    })
+
+    return $render;
+}
+</script>

@@ -1,0 +1,144 @@
+<template>
+    <div class="page page-pd page-console">
+        <div class="page-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-100 small-100 medium-100 large-100 xlarge-25"></div>
+					<div class="col-100 small-100 medium-100 large-100 xlarge-75">
+						<h1>Articles list</h1>
+					</div>
+				</div>
+			</div>
+			<div class="whitebg">
+				<div class="container">
+					<div class="row">
+						<div class="col-50">
+
+							<div id="articlesList">
+								<div class="userforms">
+									<div class="flexzone" style="align-items: center; margin-top: 0; padding-top: 0;">
+										<div>
+											<div class="name">Universal search</div>
+										</div>
+										<div class="parms">
+											<input class="input search" type="text" placeholder="Enter text"/>
+										</div>
+									</div>
+								</div>
+								<ul class="list"></ul>
+								<ul class="pagination"></ul>
+							</div>
+
+				
+						</div>
+						<div class="col-25">
+						</div>
+						<div class="col-25">						
+							<div class="rightnav">
+								<div>
+									<a href="/console" class="col button button-fill">Back to Console</a>
+								</div>
+								<div>
+									<a href="#" class="col button button-fill color-gray" @click=${addArticle}>Add new article</a>
+								</div>
+								<div>
+									<div class="subtitle">Article Import CSV</div>
+									<form class="list" id="loadArticleCSV">
+										<div class="articleImportCSV"></div>
+										<div class="hover active">
+											<div class="flex">
+												<input class="form-control" type="file" id="articleImportCSVinput" name="csv" accept="text/csv"/>
+											</div>
+										</div>
+									</form>
+
+								</div>
+								<div>
+									<editzone data-icon="send"><div class="fr" data-original="Testing" contenteditable="true"></div></editzone>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+        </div>
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let profile = {};
+	let listTmp = {
+		valueNames: [
+			'title',
+			'context',
+			{ data: ['id'] },
+			{
+				name: 'link',
+				attr: 'href'
+			},
+		],
+		page: 50,
+		pagination: true,
+		item: '<div><a href="#" class="link item-link item-content"><div class="item-inner"><div class="item-title"><div class="item-title title"></div><div class="item-footer context">Item footer text</div></div></div></a></div>'
+	};
+	function addArticle(){
+		$store.dispatch('addArticle', {});
+	}
+	
+	$on("pageInit", function (e, page) {
+		app.preloader.hide();
+		app.request.postJSON(apiServer+'console/acticles/list').then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.err});
+				} else {
+					data = res.data;
+					//$update();
+					var articlesList = new List('articlesList', listTmp, data);
+
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+		
+		$('#loadArticleCSV #articleImportCSVinput').change(function() {
+			$input = $("#loadArticleCSV #articleImportCSVinput");
+			
+			app.dialog.preloader('Пожалуйста, подождите...');
+
+			formElement = document.querySelector("#loadArticleCSV");
+			formData = new FormData(formElement);
+			app.request({
+				url: apiServer+'console/acticles/csv',
+				method: 'POST',
+				data: formData,
+				cache: false,
+				mimeType: 'multipart/form-data',
+				processData: true,
+				beforeSend: function ( xhr ) {		
+					
+				},
+				complete(res) {
+					
+					data = JSON.parse(res.response)
+					console.log(data.double);
+					if(data.double){
+						for (let i = 0; i < data.double.length; i++) {
+							
+							$store.dispatch('msgalert', {err: data.double[i], title: 'Declined. Copy of text.'});
+						}
+					}
+					app.views.main.router.refreshPage();
+					app.dialog.close();
+				}
+			});
+		});
+	});
+    return $render;
+}
+</script>

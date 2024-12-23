@@ -1,0 +1,296 @@
+<template>
+    <div class="page subscription">
+		<div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+							<h1 class="headTitle">Подписка
+								<div class="menu-item menu-item-dropdown">
+									<div class="menu-item-content">${subscriptionName}</div>
+									<div class="menu-dropdown menu-dropdown-right">
+										<div class="menu-dropdown-content">
+											<a href="#zooid" class="menu-dropdown-link menu-close tab-link tab-link-active">Зоо ID</a>
+											<a href="#concierge" class="menu-dropdown-link menu-close tab-link">Зооконсьерж</a>
+										</div>
+									</div>
+								</div>
+							
+							</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">
+				
+					<div class="row">		
+						<div class="tabs" style="width: 100%;">
+						
+						<div class="page-content tab tab-active" id="zooid" name="Зоо ID">
+							<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+								<div class="toolbar tabbar toolbar-bottom">
+									<div class="toolbar-inner">
+										<a href="#current" class="tab-link tab-link-active">Ваша подписка</a>
+										<a href="#config" class="tab-link">Управление подпиской</a>
+									</div>
+								</div>
+								<div class=" ">
+									<div class="tabs">
+										<div id="current" class="page-content tab tab-active">
+											${zooid ? $h`
+											<div class="wrap">
+												<a href="#" class="button button-outline icon sheet-open"  data-sheet=".modal-subscription-configs"><img src="/assets/icon_config.svg"/> Настроить подписку</a>
+												<div class="card">
+													<div class="infoname">
+														<div class="bigtitle">${zooid.info.name}</div>
+														<div class="aftertitle">Действует до ${zooid.endtextdata} (${zooid.endtext})</div>
+													</div>
+													<div class="options">
+														${zooid.pendant ? $h`
+														<div class="option"><img src="assets/icon_check.svg"/><div class="name">Кулон с уникальным ID</div></div>
+														` : $h``}
+														${zooid.manager ? $h`
+														<div class="option"><img src="assets/icon_check.svg"/><div class="name">Менеджер с круглосуточной линией</div></div>
+														` : $h``}
+														${zooid.remuneration ? $h`
+														<div class="option"><img src="assets/icon_check.svg"/><div class="name">Выплата вознаграждения нашедшему</div></div>
+														` : $h``}
+														${zooid.delivery ? $h`
+														<div class="option"><img src="assets/icon_check.svg"/><div class="name">Доставка питомца вам в пределах Минска и области</div></div>
+														` : $h``}
+													</div>
+												</div>
+											</div>
+											` : $h`
+											<div class="wrap">
+												<div class="nosub">
+													<div class="h2">У вас нет активной подписки на Зоо ID</div>
+													<div class="gray">Пожалуйста перейдите к подпискам</div>													
+												</div>
+												<a href="/subscribing" class="button button-outline icon" >Перейти к подпискам</a>
+											</div>
+											`}
+										</div>
+										<div id="config" class="page-content tab">
+											${zooid ? $h`
+											<div class="wrap">
+												<div class="h2">Подключена Зоо ID</div>
+												<div class="configinfo">
+													<div class="flex">
+														<div class="name">Название</div>
+														<div class="info">${zooid.info.name}</div>
+													</div>
+													<div class="flex">
+														<div class="name">Стоимость подписки</div>
+														<div class="info">${zooid.info.pricebase} ${zooid.info.currency}</div>
+													</div>
+													<div class="flex">
+														<div class="name">Продление</div>
+														<div class="info">${zooid.endtextdata}</div>
+													</div>
+													<div class="flex">
+														<div class="name">Cпособ оплаты</div>
+														<div class="info">
+															<div>Mastercard</div>
+															<div><a href="#">Изменить</a></div>
+														</div>
+													</div>
+													<div class="flex">
+														<a href="#" class="col button button-outline">Отписаться</a>
+													</div>
+												</div>
+											</div>
+											` : $h`
+											<div class="wrap">
+												<div class="nosub">
+													<div class="h2">У вас нет активной подписки на Зоо ID</div>
+													<div class="gray">Пожалуйста перейдите к подпискам</div>													
+												</div>
+												<a href="/subscribing" class="button button-outline icon" >Перейти к подпискам</a>
+											</div>
+											`}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="page-content tab" id="concierge" name="Зооконсьерж">
+							<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+								<div class="toolbar tabbar toolbar-bottom">
+									<div class="toolbar-inner">
+										<a href="#conciergecurrent" class="tab-link tab-link-active">Ваша подписка</a>
+										<a href="#conciergeconfig" class="tab-link">Управление подпиской</a>
+									</div>
+								</div>
+								<div class=" ">
+									<div class="tabs">
+										<div id="conciergecurrent" class="page-content tab tab-active">
+											${concierge ? $h`
+											<div class="wrap">
+												<div class="card">
+													<div class="infoname">
+														<div class="bigtitle">${concierge.info.name}</div>
+														<div class="aftertitle">Действует до ${concierge.endtextdata} (${concierge.endtext})</div>
+													</div>
+												</div>
+											</div>
+
+											` : $h`
+											<div class="wrap">
+												<div class="nosub">
+													<div class="h2">У вас нет активной подписки на зооконсьерж</div>
+													<div class="gray">Пожалуйста перейдите к подпискам</div>													
+												</div>
+												<a href="/subscribing" class="button button-outline icon" >Перейти к подпискам</a>
+											</div>
+											`}
+										</div>
+										<div id="conciergeconfig" class="page-content tab">
+
+											${concierge ? $h`
+											<div class="wrap">
+												<div class="h2">Подключена услуга Консьерж</div>
+												<div class="configinfo">
+													<div class="flex">
+														<div class="name">Название</div>
+														<div class="info">${concierge.info.name}</div>
+													</div>
+													<div class="flex">
+														<div class="name">Стоимость подписки</div>
+														<div class="info">${concierge.info.pricebase} ${concierge.info.currency}</div>
+													</div>
+													<div class="flex">
+														<div class="name">Продление</div>
+														<div class="info">${concierge.endtextdata}</div>
+													</div>
+													<div class="flex">
+														<div class="name">Cпособ оплаты</div>
+														<div class="info">
+															<div>Mastercard</div>
+															<div><a href="#">Изменить</a></div>
+														</div>
+													</div>
+													<div class="flex">
+														<a href="#" class="col button button-outline">Отписаться</a>
+													</div>
+												</div>
+											</div>
+											` : $h`
+											<div class="wrap">
+												<div class="nosub">
+													<div class="h2">У вас нет активной подписки на зооконсьерж</div>
+													<div class="gray">Пожалуйста перейдите к подпискам</div>													
+												</div>
+												<a href="/subscribing" class="button button-outline icon" >Перейти к подпискам</a>
+											</div>
+											`}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						</div>
+					</div>		
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="sheet-modal modal-subscription-configs">
+			<div class="hat"><a class="link sheet-close" href="#"></a></div>
+			<div class="sheet-modal-inner">
+				<div class="modal-title">Настройка подписки</div>
+				<div class="configslist">
+					<div>
+						<label class="item-checkbox item-content">
+							<input type="checkbox" name="pendant" value="1" checked="checked" /> <i class="icon icon-checkbox"></i>
+							<div class="item-inner">
+								<div class="item-title">Кулон с уникальным ID</div>
+							</div>
+						</label>
+					</div>
+					<div>
+						<label class="item-checkbox item-content">
+							<input type="checkbox" name="manager" value="1" checked="checked" /> <i class="icon icon-checkbox"></i>
+							<div class="item-inner">
+								<div class="item-title">Менеджер с круглосуточной линией</div>
+							</div>
+						</label>
+					</div>
+					<div>
+						<label class="item-checkbox item-content">
+							<input type="checkbox" name="remuneration" value="1" checked="checked" /> <i class="icon icon-checkbox"></i>
+							<div class="item-inner">
+								<div class="item-title">Выплата вознаграждения нашедшему</div>
+							</div>
+						</label>
+					</div>
+					<div>
+						<label class="item-checkbox item-content">
+							<input type="checkbox" name="delivery" value="1" checked="checked" /> <i class="icon icon-checkbox"></i>
+							<div class="item-inner">
+								<div class="item-title">Доставка питомца вам в пределах Минска и области</div>
+							</div>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	let subscriptionName = 'Зоо ID';
+	let zooid = false;
+	let concierge = false;
+	let nosub = true;
+	$on("pageInit", function (e, page) {
+		app.on('tabShow', function (e) {
+			if(e.getAttribute("name")){
+				subscriptionName = e.getAttribute("name");
+				$update();
+			}
+		  
+		});
+		app.request.postJSON(apiServer+'subscribe/status').then(function (res) {
+			if(res.data){
+				if(res.data.err){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {
+						err: res.data.err
+					});
+				} else {
+					app.preloader.hide();
+					if(res.data.zooid){
+						zooid = res.data.zooid;
+						
+						zooid.endtext = moment(zooid.end, "YYYYMMDD").fromNow();
+						zooid.endtextdata = moment(zooid.end, "YYYYMMDD").format('D MMMM YYYY');
+						nosub = false;
+					};
+					if(res.data.concierge){
+						concierge = res.data.concierge;
+						concierge.endtext = moment(concierge.end, "YYYYMMDD").fromNow();
+						concierge.endtextdata = moment(concierge.end, "YYYYMMDD").format('D MMMM YYYY');
+						nosub = false;
+					}
+					if(nosub){
+						app.views.main.router.navigate('/nosub');
+					}
+					$update();
+				}
+								
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+			}
+							
+		});
+		
+	});
+    return $render;
+}
+</script>

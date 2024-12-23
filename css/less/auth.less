@@ -1,0 +1,51 @@
+.page{
+	
+	&.auth{
+		&.page-previous{
+			display: none;
+		}
+		top: 0;
+		background: #fff;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		z-index: 10;
+		height: 100vh;
+		position: fixed;
+		.page-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 100%;
+		}
+		.headForm{
+			font-size: 40px;
+			line-height: 45px;
+			text-align: center;
+			letter-spacing: -0.025em;
+			color: #161616;
+			margin: 0;
+		}
+		.afterhead{
+			font-size: 18px;
+			line-height: 25px;
+			text-align: center;
+			letter-spacing: -0.015em;
+			color: rgba(22, 22, 22, 0.4);
+			padding-top: 15px;
+		}
+		.closeToHome {
+			position: absolute;
+			top: 40px;
+			right: 80px;
+			width: 52px;
+			height: 52px;
+			z-index: 11;
+			background: #fff;
+			border-radius: 50%;
+		}
+		.dataForm{
+		    padding-top: 25px;
+		}
+	}
+}

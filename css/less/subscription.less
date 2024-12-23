@@ -1,0 +1,338 @@
+.subscription{
+
+	.card{
+		background: #FFFFFF;
+		box-shadow: inset 0 0 0 1px rgba(22,22,22, 0.25);
+		border-radius: 15px;
+		width: ~'calc(100% - 50px)';
+		padding: 40px 25px;
+		margin: 0;
+		.infoname{
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+			.bigtitle{
+				font-weight: 400;
+				font-size: 40px;
+				line-height: 45px;
+				letter-spacing: -0.025em;
+				color: #161616;
+			}
+			.aftertitle{
+				font-weight: 400;
+				font-size: 18px;
+				line-height: 25px;
+				letter-spacing: -0.015em;
+				color: #161616;
+				opacity: 0.4;
+			}
+		}
+		.options{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 40px;
+			padding-top: 40px;
+			.option{
+				display: flex;
+			    flex-direction: column;
+				align-items: flex-start;
+				gap: 10px;
+				width: 50%;
+				flex: 1 1 40%;
+				box-shadow: 0 -1px 0 0 rgba(22, 22, 22, 0.25);
+				padding: 15px 0;
+				margin-bottom: -15px;
+				img{
+				}
+				.name{
+					font-weight: 400;
+					font-size: 18px;
+					line-height: 25px;
+					letter-spacing: -0.015em;
+					color: #161616;
+				}
+			}
+		}
+	}
+	.nosub{
+		gap: 25px;
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 20px;
+		.h2{
+			padding: 0;
+			margin: 0;
+		}
+		.gray{
+			font-weight: 400;
+			font-size: 18px;
+			line-height: 25px;
+			letter-spacing: -0.015em;
+			color: rgba(22, 22, 22, 0.4);
+		}
+	}
+	.configinfo{
+		width: 50%;
+		.flex{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			box-shadow: 0 1px 0 0 rgba(22, 22, 22, 0.25);
+			padding: 25px 0;
+			&:last-child{
+				box-shadow: none;
+			}
+			.name{
+				font-size: 18px;
+				line-height: 25px;
+				letter-spacing: -0.015em;
+				color: #161616;
+				opacity: 0.4;
+			}
+			.info{
+				font-size: 18px;
+				line-height: 25px;
+				text-align: right;
+				letter-spacing: -0.015em;
+				color: #161616;
+				display: flex;
+				gap: 15px;
+			}
+			.button{
+				width: 100%;
+			}
+		}
+	}
+	
+	.headTitleSub{
+		font-size: 90px;
+		line-height: 95px;
+		letter-spacing: -0.035em;
+		color: #161616;
+		margin-top: 0;
+	}
+	.fixpad{
+	    padding-top: 218px;
+	}
+	.listCard{
+		display: flex;
+		flex-direction: column;
+		gap: 120px;
+		.box{
+			display: flex;
+			flex-direction: column;
+			gap: 40px;
+			.name{
+				font-size: 40px;
+				line-height: 45px;
+				letter-spacing: -0.025em;
+				color: #161616;
+			}
+			.dataForm{
+				max-width: 100%;
+				width: 100%;
+				justify-content: flex-start;
+				align-items: stretch;
+				display: grid;
+				>div{
+					display: flex;
+					flex-direction: column;
+					gap: 15px;
+					.name{
+						font-size: 18px;
+						line-height: 25px;
+						letter-spacing: -0.015em;
+						color: #161616;
+					}
+					label{
+						input{
+							font-weight: 400;
+							font-size: 18px;
+							line-height: 25px;
+							letter-spacing: -0.015em;
+							color: #161616;
+						}
+					}
+					.addMorePhone {
+						display: flex;
+						font-weight: 400;
+						font-size: 18px;
+						line-height: 25px;
+						letter-spacing: -0.015em;
+						color: #EB6130;
+						gap: 5px;
+						align-items: flex-end;
+						height: 100%;
+						padding-bottom: 15px;
+						cursor: pointer;
+						>div, img{
+							pointer-events: none;
+						}
+					}
+					.item-checkbox{
+						background: #F4F4F9;
+						border-radius: 10px;
+						height: 55px;
+						display: flex;
+						align-items: center;
+						padding: 0 25px;
+						.icon-checkbox{
+							width: 20px;
+							height: 20px;
+							border: 1px solid #161616;
+							border-radius: 20px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							background: none;
+							opacity: 0.4;
+							&:after{
+								width: 10px;
+								height: 10px;
+								line-height: inherit;
+								background-color: #000;
+								border-radius: 10px;
+								top: 0;
+								left: 0;
+								content: '';
+							}
+						}
+						+ .item-checkbox{
+							margin-top: 15px;
+						}
+						.item-inner{
+							opacity: 0.4;
+							.item-title{
+								font-size: 18px;
+								line-height: 25px;
+								letter-spacing: -0.015em;
+								color: #161616;
+							}
+						}
+						input[type=checkbox]:checked~.icon-checkbox{
+							opacity: 1;
+						}
+						input[type=checkbox]:checked~.item-inner{
+							opacity: 1;
+						}
+						
+					}
+				}
+				.fullw{
+					textarea {
+						height: 55px;
+						padding: 15px 25px;
+						width: 100%;
+						height: 100px;
+					}
+					grid-column: span 2;
+				}
+			}
+		}
+	}
+	.finalBlock{
+		
+		border-radius: 15px;
+		display: flex;
+		flex-direction: column;
+		gap: 3.5px;
+		background-color: #fff;
+		overflow: hidden;
+		>div{
+			background: #f4f4f9;
+			padding: 40px;
+			&:last-child{
+				padding: 0px;
+				margin-top: -3.5px;
+				.button{
+				    border-radius: 0;
+					height: 75px;
+					font-size: 18px;
+					line-height: 75px;
+					text-align: center;
+					letter-spacing: -0.015em;
+					color: #FFFFFF;
+					
+					display: flex;
+					align-items: center;
+					align-content: center;
+					gap: 5px;
+					img{
+						display: block;
+					}
+				}
+			}
+		}
+		.name{
+			font-weight: 400;
+			font-size: 27px;
+			line-height: 35px;
+			letter-spacing: -0.015em;
+			color: #161616;
+		}
+		.graytext{
+			font-weight: 400;
+			font-size: 18px;
+			line-height: 25px;
+			letter-spacing: -0.015em;
+			color: rgba(22, 22, 22, 0.4);
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			img{
+				display: block;
+			}
+		}
+		.othersubs {
+			margin-top: 25px;
+		}
+		.price{
+			display: flex;
+			>div{
+				width: 50%;
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+			}
+			.label{
+				font-size: 18px;
+				line-height: 25px;
+				letter-spacing: -0.015em;
+				color: rgba(22, 22, 22, 0.4);
+			}
+			.data{
+				text-transform: uppercase;
+				font-size: 27px;
+				line-height: 35px;
+				letter-spacing: -0.015em;
+				color: #161616;
+			}
+		}
+	}
+	@media (max-width: 800px){
+		.listCard{
+			.box{
+				.dataForm{
+					display: flex;
+					gap: 25px;
+					.minmtop{
+					
+					}
+					.obj {
+						flex-direction: row;
+						justify-content: flex-start;
+						align-items: stretch;
+						>div{
+							width: 100%;
+						}
+					}
+				}
+			} 
+		} 
+		.finalBlock {
+			padding-top: 60px;
+		}
+	
+	}
+}

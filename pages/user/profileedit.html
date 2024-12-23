@@ -1,0 +1,265 @@
+<template>
+    <div class="page page-pd page-profile">
+        <div class="page-content">
+			<section id="headZone" class="about-section">
+				<div class="bg-inner  inner-page-hero division">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-66 xsmall-66 small-66 medium-66 large-66 xlarge-66">
+								<div class="title">
+									<h2 class="h2-xl">Настройка моего профайла</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<div class="container">
+				<div class="row">
+					<div class="col-35">
+						<div class="card">
+							<div class="vertTabs">
+								<a href="#profile-base" class="tab-link tab-link-active">Базовая информация</a>
+								<a href="#profile-contacts" class="tab-link">Контактные данные</a>
+								<a href="#profile-passport" class="tab-link">Паспорт и документы</a>
+								<a href="#profile-allerts" class="tab-link">Уведомления</a>
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-content card-content-padding">Блок со справочной информацией или иной иной информацией. Как рекламировать, как администрировать и иные данные</div>
+						</div>
+					</div>
+					<div class="col-65">
+						<div class="tabs">
+							<div id="profile-base" class="page-content tab tab-active">
+								<form class="list" id="userInfo">
+									<ul>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Фамилия</div>
+													<div class="item-input-wrap">
+														<input type="text" name="f" placeholder="Введите свою фамилию" value="${profile.f}" required validate />
+													</div>
+												</div>
+											</div>						
+										</li>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Имя</div>
+													<div class="item-input-wrap">
+														<input type="text" name="i" placeholder="Введите свое имя" value="${profile.i}" required validate />
+													</div>
+												</div>
+											</div>						
+										</li>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Отчество</div>
+													<div class="item-input-wrap">
+														<input type="text" name="o" placeholder="Введите свое отчество" value="${profile.o}" required validate />
+													</div>
+												</div>
+											</div>						
+										</li>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label"></div>
+													<div class="item-input-wrap noline">
+														<a class="button saveInfo">Сохранить изменения</a>
+													</div>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</form>
+							</div>
+							<div id="profile-contacts" class="page-content tab">
+								<form class="list" id="savePhone">
+									<ul>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Номер телефона</div>
+													<div class="item-input-wrap">
+														<input id="formPhone" type="tel" name="phone"  placeholder="+7 (000) 000-00-00"  value="${profile.phone}" required validate />
+													</div>
+												</div>
+											</div>						
+										</li>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label"></div>
+													<div class="item-input-wrap noline">
+														<a class="button phoneValid">Подтвердить номер телефона</a>
+													</div>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</form>
+								<form class="list" id="saveEmail">
+									<ul>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">E-mall</div>
+													<div class="item-input-wrap">
+														<input id="formPhone" type="email" name="email"  placeholder="pochta@mail.ru" value="${profile.email}"  required validate />
+													</div>
+												</div>
+											</div>						
+										</li>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label"></div>
+													<div class="item-input-wrap noline">
+														<a class="button emailValid">Сменить Email</a>
+													</div>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</form>
+							</div>
+							<div id="profile-passport" class="page-content tab">
+								<form class="list" id="userPassport">
+									<ul>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Паспорт</div>
+													<div class="item-input-wrap">
+														<input type="text" name="passport" placeholder="Введите номер паспорта" value="${profile.passport}" required validate />
+													</div>
+												</div>
+											</div>						
+										</li>
+										<li>
+											<div class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label"></div>
+													<div class="item-input-wrap noline">
+														<a class="button saveInfo">Сохранить изменения</a>
+													</div>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</form>
+							</div>
+							<div id="profile-allerts" class="page-content tab">
+							</div>
+						</div>
+						
+						
+					</div>
+				</div>
+
+				
+			</div>
+        </div>
+    </div>
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+	var profile = {};
+	function formatPhoneNumber(phoneNumberString) {
+		var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+		var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/)
+		if (match) {
+			var intlCode = (match[1] ? '+7 ' : '')
+			return [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('')
+		}
+		return null
+	}
+	$on("pageInit", function (e, page) {
+		app.request.postJSON(apiServer+'user/profile').then(function (res) {
+			if(res.data){
+				if(res.data.error){
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: res.data.error});
+					app.views.main.router.navigate('/user/login');
+				} else {
+					profile = res.data;
+					profile.phone = '+'+profile.phone;
+					profile.phone = formatPhoneNumber(profile.phone);
+					$update();
+					app.preloader.hide();
+				}
+			} else {
+				app.preloader.hide();
+				$store.dispatch('msgalert', {err: 'Попробуйте позже.'});
+			}
+		});
+
+		var element = document.getElementById('formPhone');
+		var maskOptions = {
+			mask: '+7 (000) 000-00-00',
+			lazy: false
+		} 
+		var mask = new IMask(element, maskOptions);		
+		$('.phoneValid').on('click', function () {
+			var formData = $f7.form.convertToData('#savePhone');
+			// formData.phone
+			let checkPhone = formData.phone;
+			checkPhone = checkPhone.replace(/[^+\d]/g, '');
+
+			if(checkPhone.length == 12){
+				app.request.postJSON(apiServer+'user/phone', formData).then(function (res) {
+					if(res.data){
+						if(res.data.error){
+							app.preloader.hide();
+							$store.dispatch('msgalert', {err: res.data.error});
+						} else {
+							app.preloader.hide();
+							$store.dispatch('msgalert', {err: 'Информация сохранена'});
+							app.views.main.router.navigate('/user/login');
+							setTimeout(function () {
+								$f7.dialog.close();
+							}, 1000);
+						}								
+					} else {
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+					}							
+				});
+			} else {
+				$store.dispatch('msgalert', {err: 'Введите номер телефона в федеральном формате начиная с +7'});
+				return;
+			}
+		});
+		$('.saveInfo').on('click', function () {
+			var formData = $f7.form.convertToData('#userInfo');
+			app.request.postJSON(apiServer+'user/info', formData).then(function (res) {
+				if(res.data){
+					if(res.data.error){
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: res.data.error});
+					} else {
+						app.preloader.hide();
+						$store.dispatch('msgalert', {err: 'Информация сохранена'});
+						app.views.main.router.navigate('/user/');
+						setTimeout(function () {
+							$f7.dialog.close();
+						}, 1000);
+									
+					}		
+				} else {
+					app.preloader.hide();
+					$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});
+				}
+							
+			});
+		});
+		//app.views.main.router.navigate('/admin/editpost/'+res.data+'/');
+	});
+    return $render;
+}
+</script>

@@ -1,0 +1,95 @@
+<template>
+    <div class="page clients">
+		<div class="page-content">
+			<div class="head">
+				<div class="container">
+					<div class="row">
+						<div class="col-100 small-100 medium-100 large-60 xlarge-60">
+							<h1 class="headTitle">Обращения</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="container">
+	
+					<div class="card data-table">
+						<form class="filter" id="filterClients" name="filterClients">
+							<table>
+								<thead>
+									<tr>
+										<th class="label-cell">#</th>
+										<th class="label-cell">Дата</th>
+										<th class="numeric-cell">Клиент</th>
+										<th class="numeric-cell">Статус</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									${dataList.map((data, index) => $h`
+									<tr @click=${()=> showClient(data.id)}>
+										<td class="label-cell">${data.id}</td>
+										<td class="label-cell">${data.date}</td>
+										<td class="numeric-cell">${data.user}</td>
+										<td class="numeric-cell">
+											${data.status ? $h`
+												<div class="active"><span></span>Обработано</div>
+											` : $h`
+												<div class="deactive">В очереди</div>
+											`}
+										</td>
+									</tr>
+									`)}
+								</tbody>
+							</table>
+						</form>
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</div>
+		
+
+    </div>
+
+</template>
+<script>
+export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
+
+	let dataList = [];
+	let pagination = [];
+	function showClient(id){
+		$f7.views[1].router.navigate('/missinganimal/'+id+'/');
+	}
+
+	function getClinicList(){	
+		$f7.preloader.show();
+		fetch(apiServer+'services/missinganimalall', {
+			method: 'POST', 
+			body: JSON.stringify(),
+			headers: headers()
+		})
+		.then((res) => res.json())
+		.then(function (data) {
+			dataList = data;
+			for(var k in dataList) {
+				if(dataList[k]){
+					if(dataList[k].create){
+						dataList[k].date = moment(dataList[k].create, "YYYYMMDD").format('D MMMM YYYY');
+					}
+				}
+			}
+			$update();
+		});
+		
+		$f7.preloader.hide();
+	}
+	$on("pageInit", function (e, page) {
+		getClinicList();
+	});
+    return $render;
+}
+</script>
