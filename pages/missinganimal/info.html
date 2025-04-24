@@ -23,23 +23,47 @@
 							</label>
 						</div>
 						<div>
-							<div class="name">Имя отправителя</div>
+							<div class="name">Имя владельца</div>
 							<label>
 								<input class="input" type="text" value="${missinganimal.user_name}" disabled/>
 							</label>
 						</div>
 						<div>
-							<div class="name">Номер отправителя</div>
+							<div class="name">Номер владельца</div>
 							<label>
 								<input class="input" type="text" value="${missinganimal.user_phone}" disabled/>
 							</label>
 						</div>
+						${missinganimal.user_email ? $h`
 						<div>
-							<div class="name">Email отправителя</div>
+							<div class="name">Email владельца</div>
 							<label>
 								<input class="input" type="text" value="${missinganimal.user_email}" disabled/>
 							</label>
 						</div>
+						` : $h``}
+						<div>
+							<div class="name">Адрес происшествия</div>
+							<label>
+								<textarea class="input" disabled style="width: 100%; height:auto;">${missinganimal.address}</textarea>
+							</label>
+						</div>
+						${missinganimal.finder_name ? $h`
+						<div>
+							<div class="name">Имя нашедшего</div>
+							<label>
+								<input class="input" type="text" value="${missinganimal.finder_name}" disabled/>
+							</label>
+						</div>
+						` : $h``}
+						${missinganimal.finder_phone ? $h`
+						<div>
+							<div class="name">Номер нашедшего</div>
+							<label>
+								<input class="input" type="text" value="${missinganimal.finder_phone}" disabled/>
+							</label>
+						</div>
+						` : $h``}
 						<div>
 							<div class="name">Текст обращения</div>
 							<label>

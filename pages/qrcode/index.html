@@ -1,0 +1,121 @@
+<template>
+    <div class="page clients">
+        <div class="page-content">
+            <div class="head">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-100 small-100 medium-100 large-60 xlarge-60">
+                            <h1 class="headTitle">Список QR кодов</h1>
+                        </div>
+                        <div class="col-100 small-100 medium-100 large-40 xlarge-40">
+                            <div class="button_gpoup heading">
+                                <button class="button col button-fill button-round" @click=${()=> createNew()}>
+                                    Создать QR-код
+                                    <i class="right addnew"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="container">
+                    <div class="card data-table">
+                        <form class="filter" id="filterClients" name="filterClients">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th class="label-cell">UID</th>
+                                    <th class="label-cell">Ссылка</th>
+                                    <th class="label-cell">Имя пользователя</th>
+                                    <th class="numeric-cell">Статус</th>
+                                    <th class="numeric-cell"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                ${codeList.map((data, index) => $h`
+                                <tr>
+                                    <td class="label-cell">${data.uid}</td>
+                                    <td class="label-cell">${data.url}</td>
+                                    <td class="label-cell">${data.user_name}</td>
+                                    <td class="numeric-cell">${data.status}</td>
+                                    <td class="numeric-cell" @click=${()=> copyLink(data.url)}><i class="icon f7-icons">doc_on_doc</i></td>
+                                </tr>
+                                `)}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</template>
+<script>
+    export default (props, {
+        $f7,
+        $f7router,
+        $el,
+        $update,
+        $on,
+        $onBeforeMount,
+        $onMounted,
+        $onBeforeUpdate,
+        $onUpdated,
+        $onBeforeUnmount,
+        $onUnmounted,
+        $store,
+        $context
+    }) => {
+
+        let codeList = [];
+
+        function copyLink(url){
+            navigator.clipboard.writeText(url)
+            $store.dispatch('msgalert', {err: 'Ссылка для QR кода скопирована.'});
+        }
+
+        function createNew() {
+            $f7.preloader.show();
+            fetch(apiServer + 'api/qrcode/create', {
+                method: 'POST',
+                headers: headers()
+            })
+                .then((res) => res.json())
+                .then(function (data) {
+                    if (data.err) {
+                        $store.dispatch('msgalert', {err: data.err});
+                    } else {
+                        $store.dispatch('msgalert', {err: 'QR код создан.'});
+                        getCodes();
+                    }
+                });
+            $f7.preloader.hide();
+        }
+
+        function getCodes() {
+            $f7.preloader.show();
+            fetch(apiServer + 'api/qrcode', {
+                method: 'GET',
+                headers: headers()
+            })
+                .then((res) => res.json())
+                .then(function (data) {
+                    codeList = data.codes;
+                    $update();
+                });
+
+            $f7.preloader.hide();
+        }
+
+        $on("pageInit", function (e, page) {
+            getCodes();
+        });
+        return $render;
+    }
+</script>

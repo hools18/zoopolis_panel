@@ -5,11 +5,11 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-100 small-100 medium-100 large-60 xlarge-60">
-							<h1 class="headTitle">Ветеринарные клиники</h1>
+							<h1 class="headTitle">Партнеры - зоомагазины</h1>
 						</div>
 						<div class="col-100 small-100 medium-100 large-40 xlarge-40">
 							<div class="button_gpoup heading">
-								<button class="button col button-fill button-round" @click=${()=> createNew()}>Добавить клинику <i class="right addnew"></i></button>
+								<button class="button col button-fill button-round" @click=${()=> createNew()}>Добавить зоомагазин <i class="right addnew"></i></button>
 							</div>
 						</div>
 					</div>
@@ -17,7 +17,6 @@
 			</div>
 			<div class="">
 				<div class="container">
-
 					<div class="card data-table">
 						<form class="filter" id="filterClients" name="filterClients">
 							<table>
@@ -25,17 +24,17 @@
 									<tr>
 										<th class="label-cell">UID</th>
 										<th class="label-cell">Название</th>
-										<th class="numeric-cell">Адресс</th>
+										<th class="numeric-cell">Адрес</th>
 										<th class="numeric-cell">Телефон</th>
 
 									</tr>
 								</thead>
 								<tbody>
-									${clinicList.map((data, index) => $h`
-									<tr @click=${()=> showClient(data.id)}>
+									${shopList.map((data, index) => $h`
+									<tr @click=${()=> showShop(data.id)}>
 										<td class="label-cell">${data.id}</td>
 										<td class="label-cell">${data.name}</td>
-										<td class="numeric-cell">${data.addr}</td>
+										<td class="numeric-cell">${data.address}</td>
 										<td class="numeric-cell">${data.phone}</td>
 									</tr>
 									`)}
@@ -43,35 +42,26 @@
 							</table>
 						</form>
 					</div>
-
-
-
-
 				</div>
 			</div>
 		</div>
-
-
     </div>
 
 </template>
 <script>
 export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
 
-	let clinicList = [];
-	let pagination = [];
-	function showClient(id){
-		$f7.views[1].router.navigate('/veterinaryclinic/'+id+'/');
-	}
-	function getXLMS(){
-		$store.dispatch('msgalert', {err: 'ERROR XLMS'});
+	let shopList = [];
+	function showShop(id){
+		console.log(id)
+		$f7.views[1].router.navigate('/pet-shops/'+id+'/');
 	}
 
 	function createNew(){
-		$f7.dialog.prompt('Введите название клиники', function (name) {
-			$f7.dialog.confirm('Название клиники ' + name + ' введено верно?', function () {
-				fetch(apiServer+'newvetclinic', {
-					method: 'POST',
+		$f7.dialog.prompt('Введите название зоомагазина', function (name) {
+			$f7.dialog.confirm('Название зоомагазина ' + name + ' введено верно?', function () {
+				fetch(apiServer+'pet-shops/create', {
+					method: 'POST', 
 					body: JSON.stringify({
 						name: name
 					}),
@@ -82,31 +72,31 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 					if(data.err){
 						$store.dispatch('msgalert', {err: data.err});
 					} else {
-						$store.dispatch('msgalert', {err: 'Клиника добавлена.'});
-						$f7.views[1].router.navigate('/veterinaryclinic/'+data.id+'/');
+						$store.dispatch('msgalert', {err: 'Зоомагазин добавлен.'});
+						$f7.views[1].router.navigate('/pet-shops/'+data.id+'/');
 					}
 				});
 
 			});
 		});
 	}
-	function getClinicList(){
+	function getPetShopList(){
 		$f7.preloader.show();
-		fetch(apiServer+'vetclinics', {
-			method: 'POST',
+		fetch(apiServer+'pet-shops/list', {
+			method: 'POST', 
 			body: JSON.stringify(),
 			headers: headers()
 		})
 		.then((res) => res.json())
 		.then(function (data) {
-			clinicList = data.features;
+			shopList = data.features;
 			$update();
 		});
-
+		
 		$f7.preloader.hide();
 	}
 	$on("pageInit", function (e, page) {
-		getClinicList();
+		getPetShopList();
 	});
     return $render;
 }

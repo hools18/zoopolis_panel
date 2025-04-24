@@ -5,7 +5,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-100 small-100 medium-100 large-60 xlarge-60">
-							<h1 class="headTitle">Информация о клинике</h1>
+							<h1 class="headTitle">Информация о зоомагазине</h1>
 						</div>
 					</div>
 				</div>
@@ -17,54 +17,47 @@
 					
 					<form class="dataForm" id="editClinic" name="editClinic">
 						<div>
-							<div class="name">Название клиники</div>
+							<div class="name">Название</div>
 							<label>
-								<input class="input" name="name" type="text" placeholder="Название клиники" value="${clinic.name}"/>
+								<input class="input" name="name" type="text" placeholder="Название" value="${shop.name}"/>
 							</label>
 						</div>
 						<div>
 							<div class="name">Адрес</div>
 							<label>
-								<input class="input" name="addr" type="text" placeholder="Адрес" value="${clinic.addr}"/>
+								<input class="input" name="address" type="text" placeholder="Адрес" value="${shop.address}"/>
 							</label>
 						</div>
 						<div>
 							<div class="name">Ссылка на сайт</div>
 							<label>
-								<input class="input" name="link" type="text" placeholder="Ссылка на сайт" value="${clinic.link}"/>
+								<input class="input" name="link" type="text" placeholder="Ссылка на сайт" value="${shop.link}"/>
 							</label>
 						</div>
 						<div>
 							<div class="name">Номер телефона</div>
 							<label>
-								<input class="input" name="phone" type="text" placeholder="Номер телефона" value="${clinic.phone}"/>
+								<input class="input" name="phone" type="text" placeholder="Номер телефона" value="${shop.phone}"/>
 							</label>
 						</div>
-						<div>
-							<div class="name">Номер телефона #2</div>
-							<label>
-								<input class="input" name="phone2" type="text" placeholder="Номер телефона #2" value="${clinic.phone2}"/>
-							</label>
-						</div>
-						
 						<div>
 							<div class="name">Время работы</div>
 							<label>
 								<div class="text-editor text-editor-init timework" data-placeholder="Время работы клиники"
 									data-buttons='["bold", "italic", "underline", "strikeThrough"]' data-mode="popover"
 									style="--f7-text-editor-height: 150px">
-									<div class="text-editor-content" innerHTML=${clinic.timework} contenteditable></div>
+									<div class="text-editor-content" innerHTML=${shop.time_work} contenteditable></div>
 								</div>
 							</label>
 						</div>
 						
 						<div>
-							<div class="name">Информация о клинике</div>
+							<div class="name">Информация о зоомагазине</div>
 							<label>
 								<div class="text-editor text-editor-init desc" data-placeholder="Информация о клинике"
 									data-buttons='["bold", "italic", "underline", "strikeThrough"]' data-mode="popover"
 									style="--f7-text-editor-height: 150px">
-									<div class="text-editor-content" innerHTML=${clinic.desc} contenteditable></div>
+									<div class="text-editor-content" innerHTML=${shop.desc} contenteditable></div>
 								</div>
 							</label>
 						</div>
@@ -76,25 +69,23 @@
 						<div>
 							<div class="name">Координаты расположения</div>
 							<label>
-								<input class="input" name="coordinates" type="text" placeholder="[]" value="${clinic.coordinates}"/>
+								<input class="input" name="lat" type="text" value="${shop.lat}" readonly/>
+								<input class="input" name="lng" type="text" value="${shop.lng}" readonly/>
 							</label>
 						</div>
-						
 						<div>
-							<a href="#" class="col button button-fill" @click=${updateClinic}>Сохранить изменения</a>
+							<a href="#" class="col button button-fill" @click=${updateShop}>Сохранить изменения</a>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-		
-
     </div>
 
 </template>
 <script>
 export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
-	let clinic = [];
+	let shop = [];
 	
 	let querystring = {
 		parse: function(s) {
@@ -124,8 +115,8 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 	var coordOrder = 'latlong';
 
 
-	function getClinic(){	
-		fetch(apiServer+'vetclinic/'+props['id'], {
+	function getShop(){
+		fetch(apiServer+'pet-shops/edit/'+props['id'], {
 			method: 'POST', 
 			body: JSON.stringify(),
 			headers: headers()
@@ -160,19 +151,19 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 
 			map.events.add('click', function (e) {
 				if (!map.balloon.isOpen()) {
-					var coords = e.get('coords');
-
-					clinic.coordinates = coords[0].toPrecision(8) +' '+coords[1].toPrecision(8);
-
+					let coords = e.get('coords');
+					shop.coordinates = coords[0].toPrecision(8) +' '+coords[1].toPrecision(8);
+					shop.lat = coords[0].toPrecision(8)
+					shop.lng = coords[1].toPrecision(8)
 
 					const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0].toPrecision(8)}&lon=${coords[1].toPrecision(8)}`;
 
 					try {
 						getAddressFromCoords(coords[0].toPrecision(8), coords[1].toPrecision(8)).then(function (str){
-							clinic.addr = str;
+							shop.address = str;
 							map.balloon.open(coords, {
 								contentHeader:'Координаты позиции',
-								contentBody:'' + '<p>Адрес клиники: '+ clinic.addr +'</p>',
+								contentBody:'' + '<p>Адрес: '+ shop.address +'</p>',
 								contentFooter:'<sup>При клике данные в поле координат должны обновиться.</sup>'
 							});
 							$update();
@@ -192,7 +183,7 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 			if(data.coordinates){
 				map.balloon.open(mapCenter, {
 					contentHeader:'Координаты позиции',
-					contentBody:'' + '<p>Адрес клиники: '+ data.addr +'</p>',
+					contentBody:'' + '<p>Адрес: '+ data.address +'</p>',
 					contentFooter:'<sup>При клике данные в поле координат должны обновиться.</sup>'
 				});
 			}
@@ -202,9 +193,9 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 			map.events.add('balloonopen', function (e) {
 				map.hint.close();
 			});
-			clinic = data;
-			if(clinic.coordinates){
-				clinic.coordinates = clinic.coordinates[0].toPrecision(8) +' '+clinic.coordinates[1].toPrecision(8);
+			shop = data;
+			if(shop.lat){
+				shop.coordinates = shop.lat +' '+shop.lng;
 			}
 			$update();
 		});		
@@ -222,14 +213,14 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 			return null;
 		}
 	}
-	function updateClinic(){
+	function updateShop(){
 		let formData = $f7.form.convertToData('#editClinic');
 		
 		let desc = $f7.textEditor.get('#editClinic .desc');
 		let timework = $f7.textEditor.get('#editClinic .timework');	
 		formData['desc'] = desc.value;
-		formData['timework'] = timework.value;
-		fetch(apiServer+'vetclinicupd/'+props['id'], {
+		formData['time_work'] = timework.value;
+		fetch(apiServer+'pet-shops/update/'+props['id'], {
 			method: 'POST', 
 			body: JSON.stringify(formData),
 			headers: headers()
@@ -250,7 +241,7 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 		});
 	}
 	$on("pageInit", function (e, page) {
-		getClinic();
+		getShop();
 	});
     return $render;
 }

@@ -44,7 +44,7 @@
                                     <td class="numeric-cell">${data.phone}</td>
                                     <td class="numeric-cell">
                                         ${data.zooid.status ? $h`
-                                        <div>${data.zooid.start} / <span class="gray">${data.zooid.end}</span></div>
+                                        <div>${data.zooid.start} <p class="gray" style="margin: 0;">${data.zooid.end}</p></div>
 
                                         <div class="active"><span></span>Активна</div>
                                         ` : $h`
@@ -53,8 +53,7 @@
                                     </td>
                                     <td class="numeric-cell">
                                         ${data.concierge.status ? $h`
-                                        <div>${data.concierge.start} / <span class="gray">${data.concierge.end}</span>
-                                        </div>
+                                        <div>${data.concierge.start} <p class="gray" style="margin: 0;">${data.concierge.end}</p></div>
 
                                         <div class="active"><span></span>Активна</div>
                                         ` : $h`
@@ -63,7 +62,7 @@
                                     </td>
                                     <td class="numeric-cell">
                                         ${data.zoopolis.status ? $h`
-                                        <div>${data.zoopolis.start} / <span class="gray">${data.zoopolis.end}</span>
+                                        <div>${data.zoopolis.start} <p class="gray" style="margin: 0;">${data.zoopolis.end}</p>
                                         </div>
 
                                         <div class="active"><span></span>Активна</div>
@@ -285,6 +284,14 @@
                             }
                             if (clientsList[k].concierge.end) {
                                 clientsList[k].concierge.end = moment(clientsList[k].concierge.end, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                        }
+                        if (clientsList[k].zoopolis) {
+                            if (clientsList[k].zoopolis.start) {
+                                clientsList[k].zoopolis.start = moment(clientsList[k].zoopolis.start, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                            if (clientsList[k].zoopolis.end) {
+                                clientsList[k].zoopolis.end = moment(clientsList[k].zoopolis.end, "YYYYMMDD").format('D MMMM YYYY');
                             }
                         }
                     }

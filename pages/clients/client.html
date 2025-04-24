@@ -89,6 +89,7 @@
                                     <a href="#profile" class="tab-link tab-link-active">Контактные данные</a>
                                     <a href="#addr" class="tab-link">Адрес</a>
                                     <a href="#petsinfo" class="tab-link">Информация о питомце</a>
+                                    <a href="#feedback" class="tab-link">Обращения</a>
                                 </div>
                             </div>
                             <div class=" ">
@@ -144,13 +145,7 @@
                                                 <label data-err="${userDataError.phone}">
                                                     <input class="input" name="phone" type="text"
                                                            placeholder="Номер телефона" value="${profile.phone}"
-                                                           @input=${updateUserData}/>
-                                                    ${update.phone ? $h`
-                                                    <a href="#" class="button button-fill save"
-                                                       @click=${saveDataProfile}>Сохранить</a>
-                                                    <a href="#" name="phone" class="button сancel"
-                                                       @click=${updateUserDataCancel}>Отменить</a>
-                                                    ` : $h` `}
+                                                           readonly/>
                                                 </label>
                                             </div>
 
@@ -411,6 +406,43 @@
 
                                         </div>
                                     </div>
+                                    <div id="feedback" class="page-content tab">
+                                        <div class="block1">
+                                            <div class="card data-table">
+                                                <form class="filter" id="filterClients" name="filterClients">
+                                                    <table>
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="label-cell">#</th>
+                                                            <th class="label-cell">Дата</th>
+                                                            <th class="label-cell">Текст</th>
+                                                            <th class="numeric-cell">Статус</th>
+                                                        </tr>
+                                                        </thead>
+                                                        ${dataList.length > 0 ? $h`
+                                                        <tbody>
+                                                        ${dataList.map((data, index) => $h`
+                                                        <tr @click=${()=> showClient(data.id)}>
+                                                            <td class="label-cell">${data.id}</td>
+                                                            <td class="label-cell">${data.date}</td>
+                                                            <td class="label-cell">${data.text}</td>
+                                                            <td class="numeric-cell">
+                                                                ${data.status ? $h`
+                                                                <div class="active"><span></span>Обработано</div>
+                                                                ` : $h`
+                                                                <div class="deactive">В очереди</div>
+                                                                `}
+                                                            </td>
+                                                        </tr>
+                                                        `)}
+                                                        </tbody>
+                                                        ` : $h``}
+
+                                                    </table>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -469,7 +501,7 @@
     }) => {
 
         let profile = [];
-
+        let dataList = [];
         let userEditpassError = {};
         let userDataError = [];
         let update = [];
@@ -497,6 +529,10 @@
             });
 
         };
+
+        function showClient(id){
+            $f7.views[1].router.navigate('/missinganimal/'+id+'/');
+        }
 
         function selectMale() {
             document.querySelectorAll('#userPets input[name="female"]')[0].checked = false;
@@ -732,20 +768,27 @@
                     if (profile.concierge.start) {
                         profile.concierge.startMini = moment(profile.concierge.start, "YYYYMMDD").format('D MMMM YYYY');
                     }
-                    ;
+
                     if (profile.concierge.end) {
                         profile.concierge.endMini = moment(profile.concierge.end, "YYYYMMDD").format('D MMMM YYYY');
                     }
-                    ;
+
 
                     if (profile.zoopolis.start) {
                         profile.zoopolis.startMini = moment(profile.zoopolis.start, "YYYYMMDD").format('D MMMM YYYY');
                     }
-                    ;
+
                     if (profile.zoopolis.end) {
                         profile.zoopolis.endMini = moment(profile.zoopolis.end, "YYYYMMDD").format('D MMMM YYYY');
+                    }                    ;
+                    dataList = data.feedbacks;
+                    for(var k in dataList) {
+                        if(dataList[k]){
+                            if(dataList[k].create){
+                                dataList[k].date = moment(dataList[k].create, "YYYYMMDD").format('D MMMM YYYY');
+                            }
+                        }
                     }
-                    ;
 
                     if (data.address) {
                         address = data.address;

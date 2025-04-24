@@ -45,13 +45,11 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 		if(formData.login.length <= 3 ){
 			valid = false;
 			login['login'] = 'Неверный формат номера телефона';
-			$store.dispatch('msgalert', {err: 'Неверный формат номера телефона'});
 		} else {
 			login['login'] = '';
 		}
 		if(formData.password.length <= 7 ){
 			valid = false;
-			$store.dispatch('msgalert', {err: 'Минимальная длина пароля 8 символов'});
 			login['password'] = 'Минимальная длина пароля 8 символов';
 		} else {
 			login['password'] = '';
@@ -64,24 +62,13 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 				app.request.postJSON(apiServer+'user/login', formData).then(function (res) {
 					if(res.data){
 						if(res.data.err){
-							app.preloader.hide();
+							$f7.preloader.hide();
 							$store.dispatch('msgalert', {err: res.data.err});
 							login = res.data;
 							$update();
 						} else {
-							if(res.data.token){
-								app.form.storeFormData('token', res.data.token);
-								app.request.setup({
-									headers: {
-										'Authorization': res.data.token
-									}
-								});
-								window.location.href = baseUrl;
-							} else {
-								app.preloader.hide();
-								$store.dispatch('msgalert', {err: 'Try later'});
-							}										
-						}									
+							location.href = '/code'
+						}
 					} else {
 						app.preloader.hide();
 						$store.dispatch('msgalert', {err: 'Try later'});

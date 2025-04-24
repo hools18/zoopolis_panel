@@ -8,7 +8,7 @@ var app = new Framework7({
 	el: '#app', // App root element
 	browserHistory: true,
 	browserHistorySeparator: '',
-	browserHistoryRoot: 'https://panel.xn--g1acilaagt.xn--90ais/',
+	browserHistoryRoot: 'https://panel.sergivanov.ru/',
 	mdTouchRipple: false,
 	touchRippleElements: '',
 	store: store,

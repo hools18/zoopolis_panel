@@ -52,6 +52,14 @@ var routes = [
 			animate: false,
 		}
     },
+    {
+        path: "/code",
+        componentUrl: "./pages/user/code.html?v=<?php echo $template;?>",
+        name: "code",
+        options: {
+            animate: false,
+        }
+    },
 
 	{
         path: "/logout",
@@ -118,6 +126,16 @@ var routes = [
         componentUrl: "./pages/veterinaryclinics/clinic.html?v=<?php echo $template;?>",
 		name: "clinic"
     },
+    {
+        path: "/pet-shops",
+        componentUrl: "./pages/petshops/index.html?v=<?php echo $template;?>",
+        name: "pet-shops-index"
+    },
+    {
+        path: "/pet-shops/:id/",
+        componentUrl: "./pages/petshops/edit.html?v=<?php echo $template;?>",
+        name: "pet-shops-edit"
+    },
 	
 	{
         path: "/missinganimal",
@@ -128,7 +146,11 @@ var routes = [
         path: "/missinganimal/:id/",
         componentUrl: "./pages/missinganimal/info.html?v=<?php echo $template;?>",
     },
-	
+    {
+        path: "/qrcode",
+        componentUrl: "./pages/qrcode/index.html?v=<?php echo $template;?>",
+        name: "qrcode"
+    },
 
 	{
         path: "/uikit",

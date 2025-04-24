@@ -12,7 +12,7 @@
 			</div>
 			<div class="">
 				<div class="container">
-	
+
 					<div class="card data-table">
 						<form class="filter" id="filterClients" name="filterClients">
 							<table>
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 
     </div>
 
@@ -65,10 +65,10 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 		$f7.views[1].router.navigate('/missinganimal/'+id+'/');
 	}
 
-	function getClinicList(){	
+	function getClinicList(){
 		$f7.preloader.show();
 		fetch(apiServer+'services/missinganimalall', {
-			method: 'POST', 
+			method: 'POST',
 			body: JSON.stringify(),
 			headers: headers()
 		})
@@ -84,7 +84,7 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 			}
 			$update();
 		});
-		
+
 		$f7.preloader.hide();
 	}
 	$on("pageInit", function (e, page) {

@@ -44,8 +44,7 @@ $template = filemtime_r('pages');
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo 'https://'.$domain;?>/framework7/framework7-bundle.min.css?v=<?php echo filemtime('framework7/framework7-bundle.min.css');?>">
 	<link rel="stylesheet" href="<?php echo 'https://'.$domain;?>/css/zoopolis.css?v=<?php echo filemtime('css/zoopolis.css');?>">
-	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=1af58e44-ecb0-4b9d-8605-2fc828bb06be" type="text/javascript"></script>
-
+	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=4fb02c15-f66c-4d81-8357-70d95ccff377" type="text/javascript"></script>
 </head>
 <body>
 	<div id="app">
@@ -57,7 +56,7 @@ $template = filemtime_r('pages');
 	</div>
 	<script>
         var apiServer = 'https://api.sergivanov.ru/';
-        var baseUrl = 'https://lk.sergivanov.ru/';
+        var baseUrl = '/';
 
 	</script>
 	<script src="<?php echo 'https://'.$domain;?>/js/moment.min.js?v=<?php echo filemtime('js/moment.min.js');?>"></script>

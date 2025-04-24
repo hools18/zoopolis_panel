@@ -33,7 +33,6 @@ const store = createStore({
 		},
 		
 		pass({ state }, {pass}) {
-			pass = md5('7a76-db07'+md5(pass)+'8952-a5e8');
 			return pass;
 		},
 
@@ -56,9 +55,6 @@ const store = createStore({
 
 		checkToken({ state }) {
 			return new Promise((resolve, reject) => {
-				app.store.dispatch('toast', {
-					text: 'Проверяем токен'
-				});
 				if(app.form.getFormData('token')){
 					// Токен записан в памяти браузера. Проверим его
 					app.request.postJSON(apiServer+'user/token').then(function (res) {
@@ -104,9 +100,6 @@ const store = createStore({
 				} else {					
 					
 					// Токена нет
-					app.store.dispatch('toast', {
-						text: 'Токена нет'
-					});
 					app.request.setup({
 						headers: {
 							'Authorization': false

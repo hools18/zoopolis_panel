@@ -58,7 +58,6 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 		if(formData.login.length <= 3 ){
 			valid = false;
 			signup['login'] = 'Неверный формат номера телефона';
-			$store.dispatch('msgalert', {err: 'Неверный формат номера телефона'});
 		} else {
 			signup['login'] = '';
 		}
@@ -77,14 +76,12 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 
 		if(formData.password.length <= 7 ){
 			valid = false;
-			$store.dispatch('msgalert', {err: 'Минимальная длина пароля 8 символов'});
 			signup['password'] = 'Минимальная длина пароля 8 символов';
 		} else {
 			signup['password'] = '';
 		}
 		if(formData.passwordcheck != formData.password){
 			valid = false;
-			$store.dispatch('msgalert', {err: 'Контрольный пароль на совпадает'});
 			signup['passwordcheck'] = 'Контрольный пароль на совпадает';
 		} else {
 			signup['passwordcheck'] = '';
@@ -111,7 +108,7 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 										'Authorization': res.data.token
 									}
 								});
-								window.location.href = baseUrl;
+								window.location.href = '/';
 							} else {
 								app.preloader.hide();
 								$store.dispatch('msgalert', {err: 'Try later'});
@@ -181,7 +178,7 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 												'Authorization': res.data.token
 											}
 										});
-										window.location.href = baseUrl;
+										window.location.href = '/';
 									} else {
 										app.preloader.hide();
 										$store.dispatch('msgalert', {err: 'Техническая ошибка. Попробуйте позже.'});

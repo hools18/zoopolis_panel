@@ -1,68 +1,74 @@
 <template>
     <div class="page profile client">
-		<div class="page-content">
-			<div class="head">
-				<div class="container">
-					<div class="row">
-						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
-							<h1 class="headTitle">Редактирование промокода</h1>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="">
-				<div class="container">
-					<div class="row">
-						<div class="col-100 small-100 medium-100 large-100 xlarge-100">
+        <div class="page-content">
+            <div class="head">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-100 small-100 medium-100 large-100 xlarge-100">
+                            <h1 class="headTitle">Редактирование промокода</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-100 small-100 medium-100 large-100 xlarge-100">
 
-							<div class=" ">
-								<div class="tabs">
-									<div id="promo" class="page-content tab tab-active">
-										<form class="dataForm" id="editPromo" name="editPromo">
-											<div>
-												<div class="name">Название</div>
-												<label>
-													<input class="input" name="title" type="text" placeholder="Название" value="${promo.title}"/>
-												</label>
-											</div>
-
-											<div>
-												<div class="mediaframe">
-													<div class="media" style="background-image: url(https://xn--j1ab.xn--g1acilaagt.xn--90ais/media/600/${promo.media}.webp);"></div>
-													<div class="hover">
-														<div class="flex">
-															<div class="button button-fill button-round">Нажмите для загрузки изображения</div>
-															<input class="form-control" type="file" accept="image/png, image/jpeg" id="media" name="media"/>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div>
-												<div class="name">Тип</div>
-													<div class="row">
-														<div class="col-100 small-100 medium-50 large-50 xlarge-50">
-															<label class="item-checkbox item-content" @click=${selectTypeA}>
-																<input type="checkbox" name="type" value="1"/>
-																<i class="icon icon-checkbox"></i>
-																<div class="item-inner">
-																	<div class="item-title">Бонус</div>
-																</div>
-															</label>
-														</div>
-														<div class="col-100 small-100 medium-50 large-50 xlarge-50">
-															<label class="item-checkbox item-content" @click=${selectTypeB}>
-																<input type="checkbox" name="type" value="2"/>
-																<i class="icon icon-checkbox"></i>
-																<div class="item-inner">
-																	<div class="item-title">Промокод</div>
-																</div>
-															</label>
-														</div>
-													</div>
-											</div>
+                            <div class=" ">
+                                <div class="tabs">
+                                    <div id="promo" class="page-content tab tab-active">
+                                        <form class="dataForm" id="editPromo" name="editPromo">
                                             <div>
-                                                <div class="name">Размер карточки в списке промокодов </div>
+                                                <div class="name">Название</div>
+                                                <label>
+                                                    <input class="input" name="title" type="text" placeholder="Название"
+                                                           value="${promo.title}"/>
+                                                </label>
+                                            </div>
+
+                                            <div>
+                                                <div class="mediaframe">
+                                                    <div class="media"
+                                                         style="background-image: url(https://api.sergivanov.ru/media/orig/${promo.media});"></div>
+                                                    <div class="hover">
+                                                        <div class="flex">
+                                                            <div class="button button-fill button-round">Нажмите для
+                                                                загрузки изображения
+                                                            </div>
+                                                            <input class="form-control" type="file"
+                                                                   accept="image/png, image/jpeg" id="media"
+                                                                   name="media"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div class="name">Тип</div>
+                                                <div class="row">
+                                                    <div class="col-100 small-100 medium-50 large-50 xlarge-50">
+                                                        <label class="item-checkbox item-content" @click=${selectTypeA}>
+                                                            <input type="checkbox" name="type" value="1"/>
+                                                            <i class="icon icon-checkbox"></i>
+                                                            <div class="item-inner">
+                                                                <div class="item-title">Бонус</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-100 small-100 medium-50 large-50 xlarge-50">
+                                                        <label class="item-checkbox item-content" @click=${selectTypeB}>
+                                                            <input type="checkbox" name="type" value="2"/>
+                                                            <i class="icon icon-checkbox"></i>
+                                                            <div class="item-inner">
+                                                                <div class="item-title">Промокод</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="name">Размер карточки в списке промокодов</div>
                                                 <div class="row">
                                                     <div class="col-100 small-100 medium-50 large-50 xlarge-50">
                                                         <label class="item-checkbox item-content" @click=${selectSizeA}>
@@ -85,315 +91,365 @@
                                                 </div>
                                             </div>
 
-											<div>
-												<div class="parms">
-													<a class="item-link smart-select smart-select-init tags" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Выбрать метку">
-														<select class="" name="tags" multiple>
-															${tagslist.map((item) => $h`
-																<option value="${item.id}">${item.name}</option>
-															`)}
-														</select>
-														<div class="item-content">
-															<div class="item-inner">
-																<div class="item-title">Выбрать метку</div>
-															</div>
-														</div>
-													</a>
-												</div>
-											</div>
-											<div>
-												<div class="parms">
-													<a class="item-link smart-select smart-select-init cities" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Выбрать город">
-														<select class="" name="cities" multiple>
-															${citylist.map((item) => $h`
-																<option value="${item.id}">${item.name}</option>
-															`)}
-														</select>
-														<div class="item-content">
-															<div class="item-inner">
-																<div class="item-title">Выбрать город</div>
-															</div>
-														</div>
-													</a>
-												</div>
-											</div>
+                                            <div>
+                                                <div class="parms">
+                                                    <a class="item-link smart-select smart-select-init tags"
+                                                       data-open-in="popup" data-searchbar="true"
+                                                       data-searchbar-placeholder="Выбрать метку">
+                                                        <select class="" name="tags" multiple>
+                                                            ${tagslist.map((item) => $h`
+                                                            <option value="${item.id}">${item.name}</option>
+                                                            `)}
+                                                        </select>
+                                                        <div class="item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title">Выбрать метку</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="parms">
+                                                    <a class="item-link smart-select smart-select-init cities"
+                                                       data-open-in="popup" data-searchbar="true"
+                                                       data-searchbar-placeholder="Выбрать город">
+                                                        <select class="" name="cities" multiple>
+                                                            ${citylist.map((item) => $h`
+                                                            <option value="${item.id}">${item.name}</option>
+                                                            `)}
+                                                        </select>
+                                                        <div class="item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title">Выбрать город</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
 
-											<div>
-												<div class="name">Промокод</div>
-												<label>
-													<input class="input" name="promocode" type="text" placeholder="Название" value="${promo.promocode}"/>
-												</label>
-											</div>
+                                            <div>
+                                                <div class="name">Промокод</div>
+                                                <label>
+                                                    <input class="input" name="promocode" type="text"
+                                                           placeholder="Название" value="${promo.promocode}"/>
+                                                </label>
+                                            </div>
 
-											<div>
-												<div class="name">День начала акции</div>
-												<label>
-													<input class="input" name="promostart" type="text" placeholder="Выберите день начала акции" readonly="readonly" id="promostart"  value="${promo.start}"/>
-												</label>
-											</div>
-											<div>
-												<div class="name">Скрок действия</div>
-												<label>
-													<input class="input" name="promoend" type="text" placeholder="Выберите день завершения акции" readonly="readonly" id="promoend"  value="${promo.stop}"/>
-												</label>
-											</div>
-											<div>
-												<div class="name">Валюта</div>
-													<div class="row">
-														<div class="col-100 small-100 medium-50 large-50 xlarge-50">
-															<label class="item-checkbox item-content" @click=${BYN}>
-																<input type="checkbox" name="BYN" value="BYN" checked/>
-																<i class="icon icon-checkbox"></i>
-																<div class="item-inner">
-																	<div class="item-title">BYN</div>
-																</div>
-															</label>
-														</div>
-														<div class="col-100 small-100 medium-50 large-50 xlarge-50">
-															<label class="item-checkbox item-content" @click=${RUB}>
-																<input type="checkbox" name="RUB" value="RUB" />
-																<i class="icon icon-checkbox"></i>
-																<div class="item-inner">
-																	<div class="item-title">RUB</div>
-																</div>
-															</label>
-														</div>
-													</div>
-											</div>
-											<div>
-												<div class="name">Процент на скидку</div>
-												<label>
-													<input class="input" name="percent" type="number" placeholder="Процент" value="${promo.percent}"/>
-												</label>
-											</div>
-											<div>
-												<div class="name">Скидка на сумму</div>
-												<label>
-													<input class="input" name="summ" type="number" placeholder="сумма" value="${promo.summ}"/>
-												</label>
-											</div>
-											<div>
-												<div class="name">Минимальная сумма</div>
-												<label>
-													<input class="input" name="minprice" type="number" placeholder="Название" value="${promo.minprice}"/>
-												</label>
-											</div>
-											<div>
-												<div class="name">Короткое описание</div>
-												<label>
-													<div class="item-input-wrap">
-														<div class="text-editor text-editor-init shortdesc">
-															<div class="text-editor-content" innerHTML=${promo.shortdesc} contenteditable></div>
-														</div>
-													</div>
-												</label>
-											</div>
-											<div>
-												<div class="name">Условия использования</div>
-												<label>
-													<div class="item-input-wrap">
-														<div class="text-editor text-editor-init conditions">
-															<div class="text-editor-content" innerHTML=${promo.conditions} contenteditable></div>
-														</div>
-													</div>
-												</label>
-											</div>
-											<div>
-												<div class="name">Информация о партнере</div>
-												<label>
-													<div class="item-input-wrap">
-														<div class="text-editor text-editor-init aboutpartner">
-															<div class="text-editor-content" innerHTML=${promo.aboutpartner} contenteditable></div>
-														</div>
-													</div>
-												</label>
-											</div>
-											<div>
-												<div class="name">Ссылка</div>
-												<label>
-													<input class="input" name="promolink" type="text" placeholder="Название" value="${promo.promolink}"/>
-												</label>
-											</div>
-											<div>
-												<a href="#" class="col button button-fill" @click=${updatePromo}>Сохранить изменения</a>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                                            <div>
+                                                <div class="name">День начала акции</div>
+                                                <label>
+                                                    <input class="input" name="promostart" type="text"
+                                                           placeholder="Выберите день начала акции" readonly="readonly"
+                                                           id="promostart" value="${promo.start}"/>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">День завершения акции</div>
+                                                <label>
+                                                    <input class="input" name="promoend" type="text"
+                                                           placeholder="Выберите день завершения акции"
+                                                           readonly="readonly" id="promoend" value="${promo.stop}"/>
+                                                </label>
+                                            </div>
+                                            <div>
 
-				</div>
-			</div>
-		</div>
+                                                <div class="name">Валюта 22</div>
+                                                <div class="row">
+                                                    <div class="col-100 small-100 medium-50 large-50 xlarge-50">
+                                                        <label class="item-checkbox item-content" @click=${BYN}>
+                                                            <input type="checkbox" name="BYN" value="BYN" checked/>
+                                                            <i class="icon icon-checkbox"></i>
+                                                            <div class="item-inner">
+                                                                <div class="item-title">BYN</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-100 small-100 medium-50 large-50 xlarge-50">
+                                                        <label class="item-checkbox item-content" @click=${RUB}>
+                                                            <input type="checkbox" name="RUB" value="RUB"/>
+                                                            <i class="icon icon-checkbox"></i>
+                                                            <div class="item-inner">
+                                                                <div class="item-title">RUB</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="name">Процент на скидку</div>
+                                                <label>
+                                                    <input class="input" name="percent" type="number"
+                                                           placeholder="Процент" value="${promo.percent}"/>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">Скидка на сумму</div>
+                                                <label>
+                                                    <input class="input" name="summ" type="number" placeholder="сумма"
+                                                           value="${promo.summ}"/>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">Минимальная сумма</div>
+                                                <label>
+                                                    <input class="input" name="minprice" type="number"
+                                                           placeholder="Название" value="${promo.minprice}"/>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">Короткое описание</div>
+                                                <label>
+                                                    <div class="text-editor text-editor-init shortdesc"
+                                                         data-buttons='["bold", "italic", "underline", "strikeThrough"]'
+                                                         data-mode="popover">
+                                                        <div class="text-editor-content" innerHTML=${promo.shortdesc}
+                                                             contenteditable></div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">Условия использования</div>
+                                                <label>
+
+                                                    <div class="text-editor text-editor-init conditions"
+                                                         data-buttons='["bold", "italic", "underline", "strikeThrough"]'
+                                                         data-mode="popover">
+                                                        <div class="text-editor-content"
+                                                             innerHTML=${promo.сonditions} contenteditable></div>
+                                                    </div>
+
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">Информация о партнере</div>
+                                                <label>
+                                                    <div class="text-editor text-editor-init aboutpartner"
+                                                         data-buttons='["bold", "italic", "underline", "strikeThrough"]'
+                                                         data-mode="popover">
+                                                        <div class="text-editor-content"
+                                                             innerHTML=${promo.aboutpartner} contenteditable></div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="name">Ссылка</div>
+                                                <label>
+                                                    <input class="input" name="promolink" type="text"
+                                                           placeholder="Название" value="${promo.promolink}"/>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <a href="#" class="col button button-fill" @click=${updatePromo}>Сохранить
+                                                    изменения</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
 
     </div>
 
 </template>
 <script>
-export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onMounted, $onBeforeUpdate, $onUpdated, $onBeforeUnmount, $onUnmounted, $store, $context}) => {
-	let promoend;
+    export default (props, {
+        $f7,
+        $f7router,
+        $el,
+        $update,
+        $on,
+        $onBeforeMount,
+        $onMounted,
+        $onBeforeUpdate,
+        $onUpdated,
+        $onBeforeUnmount,
+        $onUnmounted,
+        $store,
+        $context
+    }) => {
+        let promoend;
 
-	let promostart;
-	let promo = [];
-	let tagslist = [];
-	let citylist = [];
-	function selectTypeA(){
-		document.querySelectorAll('#editPromo input[name="type"]')[0].checked = true;
-		document.querySelectorAll('#editPromo input[name="type"]')[1].checked = false;
+        let promostart;
+        let promo = [];
+        let tagslist = [];
+        let citylist = [];
 
-	};
-	function selectTypeB(){
-		document.querySelectorAll('#editPromo input[name="type"]')[0].checked = false;
-		document.querySelectorAll('#editPromo input[name="type"]')[1].checked = true;
+        function selectTypeA() {
+            document.querySelectorAll('#editPromo input[name="type"]')[0].checked = true;
+            document.querySelectorAll('#editPromo input[name="type"]')[1].checked = false;
 
-	};
-    function selectSizeA(){
-        document.querySelectorAll('#editPromo input[name="size"]')[0].checked = true;
-        document.querySelectorAll('#editPromo input[name="size"]')[1].checked = false;
+        };
 
-    };
-    function selectSizeB(){
-        document.querySelectorAll('#editPromo input[name="size"]')[0].checked = false;
-        document.querySelectorAll('#editPromo input[name="size"]')[1].checked = true;
+        function selectTypeB() {
+            document.querySelectorAll('#editPromo input[name="type"]')[0].checked = false;
+            document.querySelectorAll('#editPromo input[name="type"]')[1].checked = true;
 
-    };
+        };
 
+        function selectSizeA() {
+            document.querySelectorAll('#editPromo input[name="size"]')[0].checked = true;
+            document.querySelectorAll('#editPromo input[name="size"]')[1].checked = false;
 
-	function BYN(){
-		document.querySelectorAll('#editPromo input[name="RUB"]')[0].checked = false;
-		document.querySelectorAll('#editPromo input[name="BYN"]')[0].checked = true;
+        };
 
-	};
-	function RUB(){
-		document.querySelectorAll('#editPromo input[name="BYN"]')[0].checked = false;
-		document.querySelectorAll('#editPromo input[name="RUB"]')[0].checked = true;
+        function selectSizeB() {
+            document.querySelectorAll('#editPromo input[name="size"]')[0].checked = false;
+            document.querySelectorAll('#editPromo input[name="size"]')[1].checked = true;
 
-	};
-
-	function updatePromo(){
-		$f7.preloader.show();
-		let formData = $f7.form.convertToData('#editPromo');
-
-		let shortdesc = $f7.textEditor.get('#editPromo .shortdesc');
-		formData['shortdesc'] = shortdesc.value;
-
-		let conditions = $f7.textEditor.get('#editPromo .conditions');
-		formData['conditions'] = conditions.value;
-
-		let aboutpartner = $f7.textEditor.get('#editPromo .aboutpartner');
-		formData['aboutpartner'] = aboutpartner.value;
-
-		let mediainput = $("#editPromo #media");
-		if(mediainput.prop('files')[0]){
-			formDataMedia = new FormData();
-			formDataMedia.append('media', mediainput.prop('files')[0]);
-			fetch(apiServer+'console/promosave/'+props['id'], {
-				method: 'POST',
-				headers: headers_multipart(),
-				enctype: 'multipart/form-data',
-				body: formDataMedia
-
-			})
-			.then((res) => res.json())
-			.then(function (data) {
-				$store.dispatch('msgalert', {
-					err: 'Изображение сохранено'
-				});
-				fetch(apiServer+'console/promosave/'+props['id'], {
-					method: 'POST',
-					headers: headers(),
-					body: JSON.stringify(formData),
-				})
-				.then((res) => res.json())
-				.then(function (data) {
-					$f7.preloader.hide();
-					$store.dispatch('msgalert', {
-						err: 'Информация сохранена'
-					});
-					getPromoData();
-
-				});
-			});
-
-		} else {
-			fetch(apiServer+'console/promosave/'+props['id'], {
-				method: 'POST',
-				headers: headers(),
-				body: JSON.stringify(formData),
-			})
-			.then((res) => res.json())
-			.then(function (data) {
-				$f7.preloader.hide();
-				$store.dispatch('msgalert', {
-					err: 'Информация сохранена'
-				});
-				getPromoData();
-
-			});
-		}
+        };
 
 
+        function BYN() {
+            document.querySelectorAll('#editPromo input[name="RUB"]')[0].checked = false;
+            document.querySelectorAll('#editPromo input[name="BYN"]')[0].checked = true;
 
-	}
+        };
 
-	function getPromoData(){
-		$f7.preloader.show();
+        function RUB() {
+            document.querySelectorAll('#editPromo input[name="BYN"]')[0].checked = false;
+            document.querySelectorAll('#editPromo input[name="RUB"]')[0].checked = true;
 
-		fetch(apiServer+'console/promo/'+props['id'], {
-			method: 'POST',
-			headers: headers()
-		})
-		.then((res) => res.json())
-		.then(function (data) {
-			let loadData = [];
-			if(data.tagslist){
-				tagslist = data.tagslist;
-			}
-			if(data.citylist){
-				citylist = data.citylist;
-			}
-			promo = data;
+        };
 
-            if(promo.type === 1){
-                selectTypeA();
+        function updatePromo() {
+            $f7.preloader.show();
+            let formData = $f7.form.convertToData('#editPromo');
+
+            let shortdesc = $f7.textEditor.get('#editPromo .shortdesc');
+            formData['shortdesc'] = shortdesc.value;
+
+            let conditions = $f7.textEditor.get('#editPromo .conditions');
+            formData['conditions'] = conditions.value;
+
+            let aboutpartner = $f7.textEditor.get('#editPromo .aboutpartner');
+            formData['aboutpartner'] = aboutpartner.value;
+
+            let mediainput = $("#editPromo #media");
+            if (mediainput.prop('files')[0]) {
+                formDataMedia = new FormData();
+                formDataMedia.append('media', mediainput.prop('files')[0]);
+                fetch(apiServer + 'console/promosave/' + props['id'], {
+                    method: 'POST',
+                    headers: headers_multipart(),
+                    enctype: 'multipart/form-data',
+                    body: formDataMedia
+
+                })
+                    .then((res) => res.json())
+                    .then(function (data) {
+                        $store.dispatch('msgalert', {
+                            err: 'Изображение сохранено'
+                        });
+                        fetch(apiServer + 'console/promosave/' + props['id'], {
+                            method: 'POST',
+                            headers: headers(),
+                            body: JSON.stringify(formData),
+                        })
+                            .then((res) => res.json())
+                            .then(function (data) {
+                                $f7.preloader.hide();
+                                $store.dispatch('msgalert', {
+                                    err: 'Информация сохранена'
+                                });
+                                getPromoData();
+
+                            });
+                    });
+
             } else {
-                selectTypeB();
+                fetch(apiServer + 'console/promosave/' + props['id'], {
+                    method: 'POST',
+                    headers: headers(),
+                    body: JSON.stringify(formData),
+                })
+                    .then((res) => res.json())
+                    .then(function (data) {
+                        $f7.preloader.hide();
+                        $store.dispatch('msgalert', {
+                            err: 'Информация сохранена'
+                        });
+                        getPromoData();
+
+                    });
             }
 
-            if(promo.size === 1){
-                selectSizeA();
-            } else {
-                selectSizeB();
-            }
 
-			$update();
-			if(data.tags){
-				loadData['tags'] = data.tags;
-			};
-			if(data.cities){
-				loadData['cities'] = data.cities;
-			};
-			$f7.preloader.hide();
-			$update();
-			setTimeout(() => {
-				$f7.form.fillFromData('#editPromo', loadData);
-			}, 600);
+        }
 
-		});
-	}
-	$on("pageInit", function (e, page) {
-		getPromoData();
-		promoend = $f7.calendar.create({
-			inputEl: '#promoend',
-		});
-		promostart = $f7.calendar.create({
-			inputEl: '#promostart',
-		});
+        function getPromoData() {
+            $f7.preloader.show();
 
-	});
-    return $render;
-}
+            fetch(apiServer + 'console/promo/' + props['id'], {
+                method: 'POST',
+                headers: headers()
+            })
+                .then((res) => res.json())
+                .then(function (data) {
+                    let loadData = [];
+                    if (data.tagslist) {
+                        tagslist = data.tagslist;
+                    }
+                    if (data.citylist) {
+                        citylist = data.citylist;
+                    }
+                    promo = data;
+
+                    if (promo.type === 1) {
+                        selectTypeA();
+                    } else {
+                        selectTypeB();
+                    }
+
+                    if (promo.size === 1) {
+                        selectSizeA();
+                    } else {
+                        selectSizeB();
+                    }
+
+                    if (promo.currency === 'BYN') {
+                        BYN();
+                    } else {
+                        RUB();
+                    }
+
+
+                    $update();
+                    if (data.tags) {
+                        loadData['tags'] = data.tags;
+                    }
+                    ;
+                    if (data.cities) {
+                        loadData['cities'] = data.cities;
+                    }
+                    ;
+                    $f7.preloader.hide();
+                    $update();
+                    setTimeout(() => {
+                        $f7.form.fillFromData('#editPromo', loadData);
+                    }, 600);
+
+                });
+        }
+
+        $on("pageInit", function (e, page) {
+            getPromoData();
+            promoend = $f7.calendar.create({
+                inputEl: '#promoend',
+                dateFormat: 'yyyy-mm-dd'
+            });
+            promostart = $f7.calendar.create({
+                inputEl: '#promostart',
+                dateFormat: 'yyyy-mm-dd'
+            });
+
+        });
+        return $render;
+    }
 </script>

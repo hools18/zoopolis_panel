@@ -72,11 +72,11 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 				if(res.data.error){
 					$store.dispatch('msgalert', {err: res.data.error});
 					//app.views.main.router.navigate('/login');
-					window.location.href = baseUrl+'login';
+					window.location.href = '/login';
 				} else {
 					profile = res.data;
 					if(profile.level != 9){
-						window.location.href = baseUrl;
+						window.location.href = '/';
 					}
 				}
 			} else {

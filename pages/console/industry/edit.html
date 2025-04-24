@@ -129,7 +129,7 @@ export default (props, { $f7, $f7router, $el, $update, $on, $onBeforeMount, $onM
 			if(res.data){
 				if(res.data.error){
 					$store.dispatch('msgalert', {err: res.data.error});
-					window.location.href = baseUrl;
+					window.location.href = '/';
 				} else {
 					industry = res.data;					
 					console.log(industry);
